@@ -27,7 +27,7 @@
 
 			<div class ="col-auto ml-md-auto">
 
-				<div id="timer">Holding place</div>
+				<div id="timer">Time remaining: </div>
 
 			</div>
 
@@ -38,7 +38,7 @@
 	<main class="container">
 
 		<div class="zeroth row">
-			ass
+			
 		</div>
 
 		<div class="first row justify-content-center">
@@ -51,9 +51,26 @@
 
 			<div class="col-8">
 
-				<div class="question">
+				<div class="row">
+
+					<div class="question"></div>
 
 				</div>
+
+				<div class="row align-items-center justify-content-center scoreboard">
+					<table>
+						<tr>
+							<th>Correct</th>
+							<th>Incorrect</th>
+						</tr>
+						<tr>
+							<th id="totalCor">0</th>
+							<th id="totalInc">0</th>
+						</tr>
+						
+					</table>
+				</div>
+
 
 			</div>
 
@@ -100,13 +117,13 @@
 
 			<div class="col button-holder">
 
-				<button typ="button" class="btn btn-lg btn-block btn-outline-secondary">button1</button>
+				<button typ="button" class="btn btn-lg btn-block btn-outline-secondary answerBtn" data-toggle="button" aria-pressed="false" value="">_</button>
 
 			</div>
 
 			<div class="col button-holder">
 
-				<button typ="button" class="btn btn-lg btn-block btn-outline-secondary">button2</button><!--Holds an answer button-->
+				<button typ="button" class="btn btn-lg btn-block btn-outline-secondary answerBtn" data-toggle="button" aria-pressed="false" value="">_</button><!--Holds an answer button-->
 
 			</div>
 
@@ -129,19 +146,29 @@
 
 			<div class="col button-holder">
 
-				<button typ="button" class="btn btn-lg btn-block btn-outline-secondary">button3</button><!--Holds an answer button-->
+				<button typ="button" class="btn btn-lg btn-block btn-outline-secondary answerBtn" data-toggle="button" aria-pressed="false" value="">_</button><!--Holds an answer button-->
 
 			</div>
 
 			<div class="col button-holder">
 
-				<button typ="button" class="btn btn-lg btn-block btn-outline-secondary">button4</button>
+				<button typ="button" class="btn btn-lg btn-block btn-outline-secondary answerBtn" data-toggle="button" aria-pressed="false" value="">_</button>
 
 			</div>
 
 			<div class="col-2-right">
 
 				<!--Holds blank space-->
+
+			</div>
+
+		</div>
+
+		<div class="fifth row submit">
+
+			<div class="col button-holder">
+
+				<button typ="button" class="btn btn-lg btn-block btn-outline-secondary submitBtn">Click to begin</button><!--Holds submit button-->
 
 			</div>
 
@@ -154,6 +181,8 @@
 		<!--just footer things-->
 
 	</footer>
+
+	<script src = "Assets/script.js"></script>
 
 	
 </body>

@@ -9,10 +9,34 @@ main {
 }
 
 .first {
-	border: 5px solid black;
+
 	height: 200px;
 }
 
 div {
-	border: 5px solid black;
+	
+}
+
+.question{
+	padding:20px;
+	width: 100%;
+}
+
+.col {
+	height: 100%;
+}
+
+table {
+	width: 100%;
+	text-align:center;
+}
+
+th {
+	font-size: 15px;
+	font-weight:bolder;
+	margin-top: 25px;
+}
+
+.scoreboard {
+	height: 60%;
 }
