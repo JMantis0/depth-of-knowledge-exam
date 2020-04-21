@@ -1,4 +1,10 @@
+body {
+	background-color:gold;
+}
 
+#timer {
+	font-family: 'Source Code Pro', sans-serif;
+}
 
 main {
 	width: 100%;
@@ -6,22 +12,122 @@ main {
 }
 
 .first {
-
 	height: 200px;
 }
 
-div {
-	
+.submitBtn {
+	font-family: 'Baloo Tammudu 2', cursive;
+	font-size: 28px;
+
+}
+
+.question {
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 700;
+	font-size: 50px;
+	padding:20px;
+	width: 100%;
+		
+}
+
+.btn {
+	padding-top: 25px;
+	font-family: 'Baloo Tammudu 2', cursive;
+	background-color: aqua;
+	border: 5px solid rgb(86, 10, 38);
+}
+
+.incorrectOn {
+	background-color: red;
+	box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+	transform: scale(1);
+	animation: pulse 2s infinite;
+
+}
+
+.on {
+	background-color:rgb(62, 255, 62);
+	box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+	transform: scale(1);
+	animation: pulse 2s infinite;
+}
+
+.active:hover {
+	background-color: rgb(62, 255, 62);
+	box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+	transform: scale(1);
+	animation: pulse 2s infinite;
+}
+
+
+
+
+@keyframes pulse {
+	0% {
+		transform: scale(0.95);
+		box-shadow: 0 0 0 0 rgb(0, 0, 0, .7);
+		
+	}
+
+	70% {
+		transform: scale(1);
+		box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+		
+	}
+
+	100% {
+		transform: scale(0.95);
+		
+	}
+}
+
+.divider {
+
+	content: " ";
+	display: block;
+	width: 100%;
+	background: #e7e9eb;
+	height: 2px;	
+	margin-bottom: 50px;
+	   
+}
+
+header::after {
+
+	content: " ";
+	display: block;
+	width: 100%;
+	background: #e7e9eb;
+	height: 2px;	
+	margin-bottom: 20px;
+	   
+}
+
+.second::before {
+
+	content: " ";
+	display: block;
+	width: 100%;
+	background: #e7e9eb;
+	height: 2px;	
+	margin-bottom: 50px;
+	   
+}
+
+
+.incorrect {
+	background-color: red;
+}
+
+.correct {
+	background-color: rgb(62, 255, 62);
 }
 
 .answerBtn {
 	margin-top: 25px;
 }
 
-.question{
-	padding:20px;
-	width: 100%;
-}
+
 
 .col {
 	height: 100%;

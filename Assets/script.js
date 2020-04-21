@@ -1,3 +1,6 @@
+
+
+
 testItem = [
 
 	{
@@ -86,14 +89,16 @@ testItem = [
 	}
 
 ];
-
+let testPool = testItem;
 let timeRemaining = 60;
 let totalCorrect = 0;
 let totalIncorrect = 0;
-let currentItem = 0;
+
 let quizInterval = null;
 
-$(document).ready(function(){
+$(document).ready(function () {
+
+	let currentItem = jRandom(testPool.length)
 
 	function jRandom(x) {
 		return Math.floor(Math.random() * x);
@@ -103,25 +108,28 @@ $(document).ready(function(){
 	function initialize() {
 
 		timeRemaining = 60;
-		$(".question").text("Depth of Knowledge Exam. This exam is exactly " + testItem.length + " questions.");
+		$(".question").text("Depth of Knowledge Exam. This exam is exactly " + testPool.length + " questions.");
 
 		//  Click handler for submit button at initialization.
-		$(".submitBtn").click(function() {
+		$(".submitBtn").addClass("on");
+		$(".submitBtn").click(function () {
 
-			presentNextQuestion(testItem[currentItem]);
 
-			$(".submitBtn").text("Select an answer");
+			presentNextQuestion(testPool[currentItem]);
+			$(".submitBtn").removeClass("on");
+			$(".submitBtn").text("SELECT YOUR ANSWER");
+			$(".answerBtn").addClass("active");
 			$("#timer").text("Time remaining: " + timeRemaining)
 
 			quizInterval = setInterval(function () {
-				
+
 				timeRemaining -= 1;
 				$("#timer").text("Time remaining: " + timeRemaining);
-				if(timeRemaining <= 0) {
+				if (timeRemaining <= 0) {
 					clearInterval(quizInterval);
-					//gameover();
+					//gameOver();
 				}
-				
+
 			}, 1000)
 
 		});
@@ -129,7 +137,7 @@ $(document).ready(function(){
 
 	function presentNextQuestion(item) {
 
-		$(".submitBtn").off();
+		$(".submitBtn").off().removeClass("active");
 		$(".question").text(item.question);
 
 		//set all answerBtns value to false
@@ -137,21 +145,21 @@ $(document).ready(function(){
 		$(".answerBtn").attr("value", "false");
 		$(".answerBtn")[jRandom(4)].setAttribute("value", "true");
 
-		
-		
+
+
 
 		// for each answerBtn set text to correct answer or incorrect answer by value
-		$(".answerBtn").each(function() {
+		$(".answerBtn").each(function () {
 
 			let wrongAnswers = item.incorrectAnswers;
-	
-			if(this.value === "true") {
+
+			if (this.value === "true") {
 				$(this).text(item.correctAnswer); //.textContent = item.correctAnswer;
 			}
 			else {
 				let x = jRandom(wrongAnswers.length);
 				$(this).text(wrongAnswers[x]);
-				wrongAnswers.splice(x,1);
+				wrongAnswers.splice(x, 1);
 			}
 
 		});
@@ -160,41 +168,66 @@ $(document).ready(function(){
 		//  Clickhandler for answer buttons.
 		function clickHandler(event) {
 
-			if(this.value === "true") {
-				$(".submitBtn").text("Correct! Click for Next Question");
+			$(".answerBtn").each(function () {
+
+				if (this.value === "true") {
+					$(this).addClass("correct");
+				}
+				else {
+					$(this).addClass("incorrect");
+				}
+
+			});
+
+			if (this.value === "true") {
+				$(".submitBtn").text("CORRECT!  CLICK FOR NEXT QUESTION");
 				totalCorrect += 1;
-				$("#totalCor").text(totalCorrect);
+				$(".submitBtn").addClass("on");
 			}
 			else {
-				$(".submitBtn").text("Incorrect! Click for Next Question");
+				$(".submitBtn").text("INCORRECT.  CLICK FOR NEXT QUESTION");
 				totalIncorrect += 1;
 				timeRemaining -= 5;
-				$("#timer").text("Time remaining: " + timeRemaining)
-				$("#totalInc").text(totalIncorrect);
+				$(".submitBtn").addClass("incorrectOn");
+				$("#timer").text("Time remaining: " + timeRemaining);
 			}
 
+
+			$(".answerBtn").removeClass("active");
 			$(".answerBtn").off();
 
-			$(".submitBtn").click(function() {
-				 currentItem += 1;
-				 presentNextQuestion(testItem[currentItem]);
-				 $(".submitBtn").text("Select an answer");
-		
+			$(".submitBtn").click(function () {
+
+				testPool.splice(currentItem, 1);
+				console.log(currentItem);
+				console.log(testPool[currentItem]);
+				currentItem = jRandom(testPool.length);
+				presentNextQuestion(testPool[currentItem]);
+				$(".submitBtn").text("SELECT THE CORRECT ANSWER").removeClass("incorrectOn").removeClass("on");
+				$(".answerBtn").removeClass("correct").removeClass("incorrect").addClass("active");
+
 			});
 		};
-	
+
 	}
 
-	
+	function gameover(message) {
 
-	
-		
-	
+		$("question").text(message);
+
+
+
+
+	}
+
+
+
+
 
 	initialize();
 
-	
-	
+
+
 
 
 });
