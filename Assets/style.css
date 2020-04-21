@@ -1,6 +1,4 @@
-.zeroth {
-	height: 75px;
-}
+
 
 main {
 	width: 100%;
@@ -15,6 +13,10 @@ main {
 
 div {
 	
+}
+
+.answerBtn {
+	margin-top: 25px;
 }
 
 .question{
