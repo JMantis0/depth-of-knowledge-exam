@@ -1,6 +1,27 @@
 testItem = [
 
 	{
+		name: "alert in JS",
+		question: "How do you write \"Hello World\" in an alert box?",
+		correctAnswer: "alert(\"Hello World\");",
+		incorrectAnswers: ["alertBox(\"Hello World\");", "msg(\"Hello World\");", "msgBox(\"Hello World\");"]
+	},
+
+	{
+		name: "Comment in JavaScript",
+		question: "How can you add a comment in a JavaScript?",
+		correctAnswer: "// This is a comment",
+		incorrectAnswers: ["<!--This is a comment-->", "`This is a comment", "#This is a comment"]
+	},
+
+	{
+		name: "FOR loop",
+		question: "How does a FOR loop start?",
+		correctAnswer: "for (i = 0; i < 10; i++)",
+		incorrectAnswers: ["for i = 1 to 5", "for (i <= 5; i++)", "for (i = 0; i <= 5)"]
+	},
+
+	{
 		name: "God Question",
 		question: "Does God love you?",
 		correctAnswer: "Yes, by punishing me.",
@@ -82,17 +103,15 @@ $(document).ready(function(){
 	function initialize() {
 
 		timeRemaining = 60;
-		$(".question").text("Depth of Knowledge Exam text"); 
+		$(".question").text("Depth of Knowledge Exam. This exam is exactly " + testItem.length + " questions.");
 
 		//  Click handler for submit button at initialization.
 		$(".submitBtn").click(function() {
 
-			
 			presentNextQuestion(testItem[currentItem]);
 
 			$(".submitBtn").text("Select an answer");
 			$("#timer").text("Time remaining: " + timeRemaining)
-
 
 			quizInterval = setInterval(function () {
 				
@@ -118,10 +137,10 @@ $(document).ready(function(){
 		$(".answerBtn").attr("value", "false");
 		$(".answerBtn")[jRandom(4)].setAttribute("value", "true");
 
-		// for each answerBtn set text to correct answer or incorrect answer by value
-		$(".answerBtn").click(clickHandler);
+		
+		
 
-		// sets content for each remaining button to an incorrect answer
+		// for each answerBtn set text to correct answer or incorrect answer by value
 		$(".answerBtn").each(function() {
 
 			let wrongAnswers = item.incorrectAnswers;
@@ -137,6 +156,7 @@ $(document).ready(function(){
 
 		});
 
+		$(".answerBtn").click(clickHandler);
 		//  Clickhandler for answer buttons.
 		function clickHandler(event) {
 
@@ -159,6 +179,7 @@ $(document).ready(function(){
 				 currentItem += 1;
 				 presentNextQuestion(testItem[currentItem]);
 				 $(".submitBtn").text("Select an answer");
+		
 			});
 		};
 	
