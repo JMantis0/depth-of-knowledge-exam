@@ -4,6 +4,13 @@
 testItem = [
 
 	{
+		name: "Declare function",
+		question: "Which declares a function named turnRed?",
+		correctAnswer : "function turnRed() {}",
+		incorrectAnswers: ["function() turnRed {}", "function = turnRed() {}", "function turnRed{}"]
+	},
+
+	{
 		name: "alert in JS",
 		question: "How do you write \"Hello World\" in an alert box?",
 		correctAnswer: "alert(\"Hello World\");",
@@ -25,13 +32,6 @@ testItem = [
 	},
 
 	{
-		name: "God Question",
-		question: "Does God love you?",
-		correctAnswer: "Yes, by punishing me.",
-		incorrectAnswers: ["Yes, by caring for me.", "No, he hates me", "God doesn't exist"]
-	},
-
-	{
 		name: "jQuery question",
 		question: "The shorthand version of JavaScript is called ____________.",
 		correctAnswer: "jQuery",
@@ -39,58 +39,56 @@ testItem = [
 	},
 
 	{
-		name: "Semantics question",
-		question: "An example of a symantic HTML tag would be:",
-		correctAnswer: "<h1>",
-		incorrectAnswers: ["<html>", "<head>", "<br>"]
-
-	},
-
-	{
-		name: "CSS Syntax Question",
-		question: "In CSS, which of the following is an ID selector?",
+		name: "id Syntax Question",
+		question: "Which of the following selects an element by ID?",
 		correctAnswer: "#",
 		incorrectAnswers: [".", "@", "$"]
 	},
 
 	{
-		name: "Responsive Design Question",
-		question: "In web development, 'responsive web design' means:",
-		correctAnswer: "Website appearance dynamically changes",
-		incorrectAnswers: ["Website responses designed for specific users", "Website changes depending on time of day", "Website can read your mind"]
+		name: "class Syntax Question",
+		question: "Which of the following selects an element by class?",
+		correctAnswer: ".",
+		incorrectAnswers: ["#", "@", "$"]
 	},
 
 	{
 		name: "API question",
-		question: "Which code adds an element to the <body>?",
+		question: "Which code appends an element to the <body>?",
 		correctAnswer: "$(\"body\").append(\"<div>Hello</div>\");",
 		incorrectAnswers: ["let x = document.body.createElement(<div>);", "console.log(\"Add element to body\")", "document.append(thisElement);"]
 	},
 
 	{
 		name: "Identify event listeners",
-		question: "Which of the following are not ways to add an event listener",
+		question: "Which of the following does not add an event listener",
 		correctAnswer: ".append()",
 		incorrectAnswers: [".addEventListener()", ".on()", ".click()"]
 	},
 
 	{
 		name: "Variable types",
-		question: "This variable type is either true or false:",
+		question: "This variable type holds a value of true or false:",
 		correctAnswer: "Boolean",
 		incorrectAnswers: ["String", "Constant", "Integer"]
 	},
 
 	{
 		name: "For loop question",
-		question: "Which do not belong inside for-loop parenthesis?",
+		question: "Which does not belong inside F-loop parenthesis?",
 		correctAnswer: "event listener",
 		incorrectAnswers: ["iterator", "condition", "initializer"]
+	},
+	{
+		name: "Linking .js files to html",
+		question: "What is the correct syntax for referring to an external script called \"script.js\"?",
+		correctAnswer: "<script src=\"script.js\">",
+		incorrectAnswers: ["<script href=\"script.js\">", "<script ref=\"script.js\">", "<script name=\"script.js\">"]
 	}
-
 ];
+
 let testPool = testItem;
-let timeRemaining = 60;
+let timeRemaining = 0;
 let totalCorrect = 0;
 let totalIncorrect = 0;
 
@@ -107,18 +105,20 @@ $(document).ready(function () {
 	//Function initialize sets up the initial content of HTML elements and event listeners
 	function initialize() {
 
-		timeRemaining = 60;
+		timeRemaining = 900;
 		$(".question").text("Depth of Knowledge Exam. This exam is exactly " + testPool.length + " questions.");
 
 		//  Click handler for submit button at initialization.
-		$(".submitBtn").addClass("on");
+
+		$(".answerBtn").addClass("off");
+		$(".submitBtn").addClass("on correct");
+
 		$(".submitBtn").click(function () {
 
-
 			presentNextQuestion(testPool[currentItem]);
-			$(".submitBtn").removeClass("on");
-			$(".submitBtn").text("SELECT YOUR ANSWER");
-			$(".answerBtn").addClass("active");
+
+			$(".submitBtn").removeClass("on correct").off().text("SELECT YOUR ANSWER");
+			$(".answerBtn").addClass("active").removeClass("off");
 			$("#timer").text("Time remaining: " + timeRemaining)
 
 			quizInterval = setInterval(function () {
@@ -127,7 +127,7 @@ $(document).ready(function () {
 				$("#timer").text("Time remaining: " + timeRemaining);
 				if (timeRemaining <= 0) {
 					clearInterval(quizInterval);
-					//gameOver();
+					gameOver("TIME EXPIRED.");
 				}
 
 			}, 1000)
@@ -137,7 +137,6 @@ $(document).ready(function () {
 
 	function presentNextQuestion(item) {
 
-		$(".submitBtn").off().removeClass("active");
 		$(".question").text(item.question);
 
 		//set all answerBtns value to false
@@ -180,43 +179,79 @@ $(document).ready(function () {
 			});
 
 			if (this.value === "true") {
-				$(".submitBtn").text("CORRECT!  CLICK FOR NEXT QUESTION");
-				totalCorrect += 1;
-				$(".submitBtn").addClass("on");
+
+				if(lastQuestion()) {
+					$(".submitBtn").text("CORRECT! EXAM COMPLETE. CLICK HERE");
+					totalCorrect += 1;
+					$(".submitBtn").addClass("correct")
+					$(".submitBtn").off();
+					clearInterval(quizInterval);
+				}
+				else {
+					$(".submitBtn").text("CORRECT!  CLICK FOR NEXT QUESTION");
+					totalCorrect += 1;
+					$(".submitBtn").addClass("correct on");
+
+				}
 			}
 			else {
-				$(".submitBtn").text("INCORRECT.  CLICK FOR NEXT QUESTION");
-				totalIncorrect += 1;
-				timeRemaining -= 5;
-				$(".submitBtn").addClass("incorrectOn");
-				$("#timer").text("Time remaining: " + timeRemaining);
+
+				if(lastQuestion()) {
+					$(".submitBtn").text("INCORRECT. EXAM COMPLETE. CLICK HERE ");
+					totalIncorrect += 1;
+					$(".submitBtn").addClass("incorrect");
+					$(".submitBtn").off();
+					clearInterval(quizInterval);
+					
+				}
+				else {
+					$(".submitBtn").text("INCORRECT.  CLICK FOR NEXT QUESTION");
+					totalIncorrect += 1;
+					timeRemaining -= 5;
+					$(".submitBtn").addClass("incorrect on");
+					$("#timer").text("Time remaining: " + timeRemaining);
+				}
 			}
 
 
 			$(".answerBtn").removeClass("active");
 			$(".answerBtn").off();
 
+
 			$(".submitBtn").click(function () {
 
-				testPool.splice(currentItem, 1);
-				console.log(currentItem);
-				console.log(testPool[currentItem]);
-				currentItem = jRandom(testPool.length);
-				presentNextQuestion(testPool[currentItem]);
-				$(".submitBtn").text("SELECT THE CORRECT ANSWER").removeClass("incorrectOn").removeClass("on");
-				$(".answerBtn").removeClass("correct").removeClass("incorrect").addClass("active");
+				if(!lastQuestion()) {
+					testPool.splice(currentItem, 1);
+					currentItem = jRandom(testPool.length);
+					$(".submitBtn").text("SELECT THE CORRECT ANSWER").removeClass("incorrect correct on").off();
+					$(".answerBtn").removeClass("correct incorrect").addClass("active");
+					presentNextQuestion(testPool[currentItem]);
+				}
+				if(lastQuestion()) {
+					gameOver("You reached the end of the exam.")
+				}
 
 			});
 		};
 
+		
+
 	}
 
-	function gameover(message) {
-
-		$("question").text(message);
-
-
-
+	function lastQuestion() {
+		console.log("inside lastQuestion()")
+		console.log("currentItem " +currentItem);
+		console.log("testPool[currentItem] " + JSON.stringify(testPool[currentItem]));
+		console.log("testPool.length " + testPool.length);
+		console.log("testPool.length == 0 " + (testPool.length == 0));
+		return (testPool.length == 0);
+	}
+	
+	function gameOver(message) {
+		console.log("inside gameover");
+		
+		$(".question").text(message + " GAME OVER.");
+		$(".btn").addClass("off").removeClass("active on incorrectOn correct incorrect").off();
 
 	}
 

@@ -11,14 +11,23 @@ main {
 	height: 500px;
 }
 
-.first {
-	height: 200px;
+header::after {
+
+	content: " ";
+	display: block;
+	width: 100%;
+	background: #e7e9eb;
+	height: 2px;	
+	margin-bottom: 20px;
+	   
 }
 
-.submitBtn {
-	font-family: 'Baloo Tammudu 2', cursive;
-	font-size: 28px;
 
+.first {
+	height: 200px;
+	border: 5px solid rgb(86, 10, 38);
+	text-align: center;
+	background-color: aqua;
 }
 
 .question {
@@ -27,7 +36,18 @@ main {
 	font-size: 50px;
 	padding:20px;
 	width: 100%;
-		
+	
+}
+
+.second::before {
+
+	content: " ";
+	display: block;
+	width: 100%;
+	background: #e7e9eb;
+	height: 2px;	
+	margin-bottom: 50px;
+	margin-top: 50px;
 }
 
 .btn {
@@ -35,18 +55,26 @@ main {
 	font-family: 'Baloo Tammudu 2', cursive;
 	background-color: aqua;
 	border: 5px solid rgb(86, 10, 38);
+	font-size: 28px;
 }
 
-.incorrectOn {
-	background-color: red;
-	box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
-	transform: scale(1);
-	animation: pulse 2s infinite;
+.answerBtn {
+	margin-top: 25px;
+}
 
+.incorrect {
+	background-color: red;
+}
+
+.correct {
+	background-color: rgb(62, 255, 62);
+}
+
+.off {
+	background-color:rgb(90, 91, 90);
 }
 
 .on {
-	background-color:rgb(62, 255, 62);
 	box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
 	transform: scale(1);
 	animation: pulse 2s infinite;
@@ -58,9 +86,6 @@ main {
 	transform: scale(1);
 	animation: pulse 2s infinite;
 }
-
-
-
 
 @keyframes pulse {
 	0% {
@@ -79,71 +104,4 @@ main {
 		transform: scale(0.95);
 		
 	}
-}
-
-.divider {
-
-	content: " ";
-	display: block;
-	width: 100%;
-	background: #e7e9eb;
-	height: 2px;	
-	margin-bottom: 50px;
-	   
-}
-
-header::after {
-
-	content: " ";
-	display: block;
-	width: 100%;
-	background: #e7e9eb;
-	height: 2px;	
-	margin-bottom: 20px;
-	   
-}
-
-.second::before {
-
-	content: " ";
-	display: block;
-	width: 100%;
-	background: #e7e9eb;
-	height: 2px;	
-	margin-bottom: 50px;
-	   
-}
-
-
-.incorrect {
-	background-color: red;
-}
-
-.correct {
-	background-color: rgb(62, 255, 62);
-}
-
-.answerBtn {
-	margin-top: 25px;
-}
-
-
-
-.col {
-	height: 100%;
-}
-
-table {
-	width: 100%;
-	text-align:center;
-}
-
-th {
-	font-size: 15px;
-	font-weight:bolder;
-	margin-top: 25px;
-}
-
-.scoreboard {
-	height: 60%;
 }
