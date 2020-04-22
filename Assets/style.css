@@ -66,6 +66,10 @@ header::after {
 	background-color: red;
 }
 
+.medium {
+	background-color: yellow;
+}
+
 .correct {
 	background-color: rgb(62, 255, 62);
 }
