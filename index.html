@@ -13,9 +13,9 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
 		integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<!--Link to CSS Reset-->
-	<link rel="stylesheet" href="Assets/reset.css" type="text/css">
+	<link rel="stylesheet" href="assets/css/reset.css" type="text/css">
 	<!--Link to local CSS-->
-	<link rel="stylesheet" href="Assets/style.css" type="text/css">
+	<link rel="stylesheet" href="assets/css/style.css" type="text/css">
 	<title>Depth of Knowledge</title>
 </head>
 
@@ -94,7 +94,6 @@
 			<div class="col-md-6 button-holder">
 
 				<button type="button" class="btn two btn-lg btn-block answerBtn" value=""></button>
-				<!--Holds an answer button-->
 
 			</div>
 
@@ -126,27 +125,49 @@
 	</main>
 
 	<!--High Score Modal-->
-	<div class="modal fade" id="scoreModal" tabindex="-1" role="dialog"
-		aria-labelledby="scoreModalTitle" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered" role="document">
+	<div class="modal fade" id="scoreModal">
+
+		<div class="modal-dialog modal-dialog-centered">
+
 			<div class="modal-content">
+
 				<div class="modal-header">
+
 					<h5 class="modal-title" id="scoreTitle">HIGH SCORES</h5>
+
 					<button class="close" data-dismiss="modal" >
 						<span >&times;</span>
 					</button>
+
 				</div>
-				<div class="modal-body" id="highScores">
+
+				<div class="modal-body">
+					<table id="highScores">
+						<tr>
+							<th>Player</th>
+							<th>Score</th>
+							<th>Time Remaining</tr>
+						</tr>
+					</table>
 				</div>
+
 				<div class="modal-footer">
+
+					<button class="modalBtn btn clearScores">Clear Scores</button>
+
 					<button class="modalBtn btn" data-dismiss="modal">Close</button>
+				
 				</div>
+
 			</div>
+
 		</div>
+
 	</div>
 
 	<!--Enter Initials Modal-->
 	<div class="modal fade" id="initialsModal">
+
 		<div class="modal-dialog modal-dialog-centered">
 
 			<div class="modal-content">
@@ -156,9 +177,7 @@
 					<h5 class="modal-title">Enter Your Name</h5>
 
 					<button type="button" class="close" data-dismiss="modal">
-
 						<span aria-hidden="true">&times;</span>
-
 					</button>
 
 				</div>
@@ -171,7 +190,7 @@
 
 				<div class="modal-footer">
 
-					<button class="modalBtn btn saver">Save changes</button>
+					<button class="modalBtn btn saver">Save</button>
 
 				</div>
 			</div>
@@ -183,10 +202,25 @@
 		<!--just footer things-->
 
 	</footer>
+	<audio id="correctSound">   
+		<source src="assets/audio/correctAnswer.mp3" />   
+	</audio>
+	<audio id="incorrectSound">   
+		<source src="assets/audio/incorrectAnswer.wav" />   
+	</audio>
+	<audio id="menuSelect">   
+		<source src="assets/audio/menuSelect.mp3" />   
+	</audio>
+	<audio id="scoreGong">   
+		<source src="assets/audio/scoreGong.wav">
+	</audio>
+	<audio id="timeUp">   
+		<source src="assets/audio/timeUp.mp3">
+	</audio>
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-	<script src="Assets/script.js"></script>
+	<script src="assets/js/script.js"></script>
 
 
 </body>

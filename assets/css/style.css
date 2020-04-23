@@ -117,9 +117,44 @@ header::after {
 	border: 10px solid rgb(86, 10, 38);
 }
 
-
-
-.modal-title{
+.modal-header {
+	border-bottom: 10px solid rgb(86, 10, 38);
 	font-family: 'Open Sans', sans-serif;
-	font-size: 20px;
+	background-color: rgb(62, 255, 62);
+	font-size: 30px;
+}
+
+#scoreModal .modal-body {
+	background-color: gold;
+	padding: 0;
+}
+
+.modal-footer {
+	border-top: 10px solid rgb(86, 10, 38);
+	background-color: rgb(62, 255, 62);
+}
+
+table {
+	font-family: 'Baloo Tammudu 2', cursive;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+td, th {
+	border: 1px solid rgb(86, 10, 38);
+	text-align: center;
+	padding: 8px;
+	padding-top:20px;
+}
+
+th {
+	font-weight: 900;
+	background-color: aqua;
+	font-size:20px;
+}
+
+
+
+tr:nth-child(odd) {
+	background-color: #dddddd;
 }

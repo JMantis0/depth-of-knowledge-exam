@@ -6,26 +6,49 @@ let totalIncorrect = 0;
 let totalQuestions = 0;
 let finalScore = 0;
 let quizInterval = null;
-let scores = [];
+let storedScores = [].concat(JSON.parse(localStorage.getItem("scores")));
 
 $(document).ready(function () {
-
-		//scores = JSON.parse(localStorage.getItem("scores"));
-		/*for(let i=1; i < JSON.parse(localStorage.getItem("scores")); i++) {
-			$("#highScores").append($("<li>").text(localStorage.getItem("scores")));
-		}*/
 
 	function jRandom(x) {
 
 		return Math.floor(Math.random() * x);
 
 	}
-	
+
+	for(let i=1; i < storedScores.length; i++) {
+
+		//$("<tr>").append($("<td>").text(storedScores[i][0])).append($("<td>").text(storedScores[i][2])).append($("<td>").text(storedScores[i][3])).appendTo($("#highScores"));
+
+		let newRow = $("<tr class='added'>");
+		$("#highScores").append(newRow);
+		newRow.append($("<td>").text(storedScores[i][0])).append($("<td>").text(storedScores[i][1] + " %")).append($("<td>").text(storedScores[i][2] + " seconds"));
+	}
+
+	$("audio").each(function() {
+		this.preload = "auto";
+	})
+
+	let sounds = {
+
+		select:    () => $("#menuSelect")[0].play(),
+		right:     () => $("#correctSound")[0].play(),
+		wrong:     () => $("#incorrectSound")[0].play(),
+		scoreGong: () => $("#scoreGong")[0].play(),
+		timeUp:    () => $("#timeUp")[0].play(),
+	};
+
 	//Function newGame sets up the initial content of HTML elements and event listeners
 	function newGame() {
 
+
 		$("*").off();
-		
+
+		$(".clearScores").click(function() {
+			$(".added").empty();
+			localStorage.removeItem("scores");
+		});
+
 		testItem= [
 
 			{
@@ -116,14 +139,14 @@ $(document).ready(function () {
 		totalIncorrect =0;
 		totalCorrect = 0;
 		totalQuestions = testItem.length;
-		timeRemaining = 3;
+		timeRemaining = 60;
 
 		$("a").click(function(){
 			$("#scoreModal").modal('show');
 		})
 		$(".question").text("Depth of Knowledge Exam. This exam is exactly " + testItem.length + " questions.");
 		$(".answerBtn").text("_").addClass("off").removeClass("on active correct incorrect");
-		$(".submitBtn").text("CLICK TO BEGIN").addClass("on correct").click(phaseOne).click(startTimer);
+		$(".submitBtn").text("CLICK TO BEGIN").addClass("on correct").click(startTimer).click(sounds.select).click(phaseOne);
 
 	}
 
@@ -140,11 +163,11 @@ $(document).ready(function () {
 		$(".answerBtn").each(function () {
 
 			if (this.value === "true") {
-				$(this).text(item.correctAnswer);
+				$(this).text(item.correctAnswer).click(sounds.right);
 			}
 			else {
 				let x = jRandom(wrongAnswers.length);
-				$(this).text(wrongAnswers[x]);
+				$(this).text(wrongAnswers[x]).click(sounds.wrong);
 				wrongAnswers.splice(x, 1);
 			}
 
@@ -159,7 +182,7 @@ $(document).ready(function () {
 		$(".answerBtn").each(function () {
 
 			if (this.value === "true") {
-				$(this).addClass("correct on");
+				$(this).addClass("correct");
 			}
 			else {
 				$(this).addClass("incorrect");
@@ -208,6 +231,7 @@ $(document).ready(function () {
 	function endPhase(reason) {
 
 		$(".btn").removeClass("on active correct incorrect").off();
+
 		if(reason === "complete") {
 			$(".question").text("Examination Complete!");
 			$(".four").text(totalIncorrect).addClass("incorrect");
@@ -216,6 +240,7 @@ $(document).ready(function () {
 			$(".question").text("TIME EXPIRED. GAME OVER.");
 			$(".four").text(totalIncorrect + " (" + (totalQuestions - (totalCorrect + totalIncorrect)) + " unanswered)").addClass("incorrect");
 		}
+
 		finalScore = Math.round((totalCorrect / (totalQuestions))*100);
 		$(".submitBtn").off();
 		$(".submitBtn").text("FINAL SCORE : " + finalScore + "%  CLICK TO SAVE").addClass("on");
@@ -231,18 +256,21 @@ $(document).ready(function () {
 		$(".submitBtn").off();
 		$(".submitBtn").text("FINAL SCORE : " + finalScore + "%  CLICK TO RETRY").click(newGame);
 		$("#initialsModal").modal('show');
-		$(".saver").click(logScore);
+		$(".saver").click(logScore).click(sounds.scoreGong);
 	}
 
 	function logScore() {
 
 		$(".saver").off();
+		let playerName = $("#initial-input").val();
+		let results = [playerName, finalScore, timeRemaining]
+		let newRow = $("<tr class='added'>");
+		$("#highScores").append(newRow);
+		newRow.append($("<td>").text(playerName)).append($("<td>").text(finalScore + " %")).append($("<td>").text(timeRemaining + " seconds"));
+		
 
-		$("#highScores").append($("<li>").text($("#initial-input").val() + "  " + finalScore + "%"));
-
-		//scores.push($("#initial-input").val() + "  " + finalScore + "%");
-		//localStorage.setItem("scores", JSON.stringify(scores));
-
+		storedScores.push(results);
+		localStorage.setItem("scores", JSON.stringify(storedScores));
 		$("#initial-input").val("");
 		$("#initialsModal").modal('hide');
 		$("#scoreModal").modal('show');
@@ -257,9 +285,12 @@ $(document).ready(function () {
 			$("#timer").text("Time remaining: " + timeRemaining + "s");
 			timeRemaining -= 1;
 			if (timeRemaining <= -1) {
+				timeRemaining = 0;
 				clearInterval(quizInterval);
 				$("#timer").text("Time remaining: 0s");
 				endPhase("timeUp");
+				sounds.timeUp();
+				console.log(sounds.timeUp)
 			}
 
 		}, 1000);
