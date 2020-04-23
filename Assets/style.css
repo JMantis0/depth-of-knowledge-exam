@@ -17,7 +17,7 @@ header::after {
 	width: 100%;
 	background: #e7e9eb;
 	height: 2px;	
-	margin-bottom: 20px;   
+	margin-bottom: 40px;   
 }
 
 .first {
@@ -51,8 +51,8 @@ header::after {
 	width: 100%;
 	background: #e7e9eb;
 	height: 2px;	
-	margin-bottom: 50px;
-	margin-top: 50px;
+	margin-bottom: 40px;
+	margin-top: 40px;
 }
 
 
@@ -76,9 +76,6 @@ header::after {
 	transform: scale(.95);
 }
 
-.medium {
-	background-color: yellow;
-}
 
 .correct {
 	background-color: rgb(62, 255, 62);
