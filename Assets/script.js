@@ -1,6 +1,3 @@
-
-
-
 testItem = [
 
 	{
@@ -33,29 +30,29 @@ testItem = [
 
 	{
 		name: "jQuery question",
-		question: "The shorthand version of JavaScript is called ____________.",
+		question: "The 'shorthand' version of JavaScript is called ____________.",
 		correctAnswer: "jQuery",
 		incorrectAnswers: ["HTML", "Boolean", "jScript"]
 	},
 
 	{
 		name: "id Syntax Question",
-		question: "Which of the following selects an element by ID?",
+		question: "Which of these select an element by ID?",
 		correctAnswer: "#",
 		incorrectAnswers: [".", "@", "$"]
 	},
 
 	{
 		name: "class Syntax Question",
-		question: "Which of the following selects an element by class?",
+		question: "Which of these select an element by class?",
 		correctAnswer: ".",
 		incorrectAnswers: ["#", "@", "$"]
 	},
 
 	{
 		name: "Identify event listeners",
-		question: "Which of the following does not add an event listener",
-		correctAnswer: ".append()",
+		question: "Which of these can add an event listener?",
+		correctAnswer: "All of these",
 		incorrectAnswers: [".addEventListener()", ".on()", ".click()"]
 	},
 
@@ -68,15 +65,22 @@ testItem = [
 
 	{
 		name: "For loop question",
-		question: "Which does not belong inside FOR-loop parenthesis?",
-		correctAnswer: "event listener",
+		question: "What belongs inside a FOR-loop's argument?",
+		correctAnswer: "All of these",
 		incorrectAnswers: ["iterator", "condition", "initializer"]
 	},
 	{
 		name: "Linking .js files to html",
-		question: "What is the correct syntax for referring to an external script called \"script.js\"?",
+		question: "Which links HTML to a file called \"script.js\"?",
 		correctAnswer: "<script src=\"script.js\">",
 		incorrectAnswers: ["<script href=\"script.js\">", "<script ref=\"script.js\">", "<script name=\"script.js\">"]
+	},
+
+	{
+		name: "DOM",
+		question: "What does the 'O' in DOM stand for?",
+		correctAnswer: "Object",
+		incorrectAnswers: ["Olive", "Ocelot", "Octogon"]
 	}
 
 ];
@@ -92,8 +96,15 @@ $(document).ready(function () {
 	let currentItem = jRandom(testItem.length)
 
 	function jRandom(x) {
+
 		return Math.floor(Math.random() * x);
+
 	}
+
+	$("a").click(function() {
+		event.preventDefault();
+		$("#scoreModal").modal('show');
+	})
 
 	//Function initialize sets up the initial content of HTML elements and event listeners
 	function initialize() {
@@ -105,24 +116,11 @@ $(document).ready(function () {
 
 		$(".answerBtn").addClass("off");
 		$(".submitBtn").addClass("on correct");
-
-		quizInterval = setInterval(function () {
-
-			timeRemaining -= 1;
-			$("#timer").text("Time remaining: " + timeRemaining);
-			if (timeRemaining <= 0) {
-				clearInterval(quizInterval);
-				gameOver("TIME EXPIRED.");
-			}
-
-		}, 1000);
-
-		$(".submitBtn").click(phaseOne);
+		$(".submitBtn").click(phaseOne).click(startTimer);
 
 	}
 
 	function phaseOne() {
-
 		//local variable for simplicity
 		let item = testItem[currentItem];
 		// Update question
@@ -134,7 +132,7 @@ $(document).ready(function () {
 		$(".submitBtn").text("SELECT YOUR ANSWER");
 
 		// change CSS for answerbuttons
-		$(".answerBtn").removeClass("off correct incorrect");
+		$(".answerBtn").removeClass("off on correct incorrect");
 		$(".answerBtn").addClass("active");
 		
 
@@ -161,9 +159,8 @@ $(document).ready(function () {
 			
 	}
 
-	function phaseTwo() {
-
-		
+	function phaseTwo(event) {
+		event.preventDefault();
 		$(".answerBtn").removeClass("active");
 		$(".answerBtn").off();
 
@@ -171,7 +168,7 @@ $(document).ready(function () {
 		$(".answerBtn").each(function () {
 
 			if (this.value === "true") {
-				$(this).addClass("correct");
+				$(this).addClass("correct on");
 			}
 			else {
 				$(this).addClass("incorrect");
@@ -202,28 +199,55 @@ $(document).ready(function () {
 
 	}
 
-	function stateCheck() {
-
-		if(testItem.length !== 1) {
+	function stateCheck(event) {
+		event.preventDefault();
+		if(testItem.length < 1) {
 			testItem.splice(currentItem, 1);
 			currentItem = jRandom(testItem.length);
 			phaseOne();
 		}
 		else{
 			finalScore = Math.round((totalCorrect / (totalCorrect+totalIncorrect))*100);
-			$(".btn").removeClass("active correct incorrect")
+			$(".btn").removeClass("on active correct incorrect")
 			$(".question").text("Examination Complete!");
-			$(".submitBtn").text("FINAL SCORE : " + finalScore + "%");
+			$(".submitBtn").text("FINAL SCORE : " + finalScore + "%  CLICK TO SAVE").addClass("on");
 			$(".one").text("Total Correct").addClass("correct");
 			$(".two").text("Total Incorrect").addClass("incorrect");
 			$(".three").text(totalCorrect).addClass("correct");
 			$(".four").text(totalIncorrect).addClass("incorrect");
+			clearInterval(quizInterval);
+			$(".submitBtn").click(saveScore);
 
 		}
 		
-
 	}
 
+	function saveScore() {
+		console.log("inside saveScore");
+		$("#initialsModal").modal('show');
+		$(".saver").click(logScore);
+	}
+
+	function logScore() {
+
+		$("#highScores").append($("<li>").text($("#initial-input").val() + "  " + finalScore + "%"));
+		$("#initialsModal").modal('hide');
+		$("#scoreModal").modal('show');
+	}
+
+	function startTimer() {
+
+		quizInterval = setInterval(function () {
+
+			timeRemaining -= 1;
+			$("#timer").text("Time remaining: " + timeRemaining);
+			if (timeRemaining <= 0) {
+				clearInterval(quizInterval);
+				gameOver("TIME EXPIRED.");
+			}
+
+		}, 1000);
+	}
 
 	function lastQuestion() {
 		console.log("inside lastQuestion.  testItem.length == 0 is " + (testItem.length == 1));

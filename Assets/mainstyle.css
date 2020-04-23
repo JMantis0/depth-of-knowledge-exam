@@ -12,12 +12,14 @@ main {
 }
 
 header::after {
+
 	content: " ";
 	display: block;
 	width: 100%;
 	background: #e7e9eb;
 	height: 2px;	
-	margin-bottom: 20px;   
+	margin-bottom: 20px;
+	   
 }
 
 .first {
@@ -27,14 +29,16 @@ header::after {
 	background-color: aqua;
 }
 
-#modalTitle {
+.scoreboard {
+	height: 100%;
+}
+.highscore {
 	font-family: 'Open Sans', sans-serif;
 	font-weight: 700;
-	font-size: 20px;
-	
+	font-size: 50px;
+	padding:20px;
+	width: 100%;
 }
-
-
 
 .question {
 	font-family: 'Open Sans', sans-serif;
@@ -55,8 +59,7 @@ header::after {
 	margin-top: 50px;
 }
 
-
-.submitBtn, .answerBtn {
+.btn {
 	padding-top: 25px;
 	font-family: 'Baloo Tammudu 2', cursive;
 	background-color: aqua;
@@ -70,10 +73,6 @@ header::after {
 
 .incorrect {
 	background-color: red;
-}
-
-.answerBtn.incorrect {
-	transform: scale(.95);
 }
 
 .medium {
@@ -97,32 +96,26 @@ header::after {
 .active:hover {
 	background-color: rgb(62, 255, 62);
 	box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
-	transform: scale(0.95);
+	transform: scale(1);
+	animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
 	0% {
 		transform: scale(0.95);
 		box-shadow: 0 0 0 0 rgb(0, 0, 0, .7);
+		
 	}
 
 	70% {
 		transform: scale(1);
-		box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);	
+		box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+		
 	}
 
 	100% {
-		transform: scale(0.95);	
+		transform: scale(0.95);
+		
 	}
 }
 
-.modal-content {
-	border: 10px solid rgb(86, 10, 38);
-}
-
-
-
-.modal-title{
-	font-family: 'Open Sans', sans-serif;
-	font-size: 20px;
-}
