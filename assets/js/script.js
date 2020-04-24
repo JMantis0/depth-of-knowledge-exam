@@ -203,7 +203,7 @@ $(document).ready(function () {
 				timeRemaining = 0;
 			}
 			else{
-				timeRemaining -= 5;
+				timeRemaining -= 10;
 			}
 			$("#timer").text("Time remaining: " + timeRemaining + "s");
 		}
@@ -257,10 +257,18 @@ $(document).ready(function () {
 		$(".submitBtn").text("FINAL SCORE : " + finalScore + "%  CLICK TO RETRY").click(newGame);
 		$("#initialsModal").modal('show');
 		$(".saver").click(logScore).click(sounds.scoreGong);
+		$("#initial-input").keyup(function(event) {
+			console.log("inside initialInputevent")
+			if (event.keyCode === 13) {
+				console.log("inside if for keycode")
+				$(".saver").click()
+			}
+		});
 	}
 
 	function logScore() {
 
+		$("initial-input").off();
 		$(".saver").off();
 		let playerName = $("#initial-input").val();
 		let results = [playerName, finalScore, timeRemaining]
