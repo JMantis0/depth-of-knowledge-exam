@@ -175,7 +175,7 @@ tr:nth-child(odd) {
 @media screen and (max-width: 768px) {
 	
 	.answerBtn {
-		font-size: 22px;
+		font-size: 24px;
 	}
 
 	.container {
@@ -199,14 +199,14 @@ tr:nth-child(odd) {
 @media screen and (max-width: 576px) {
 
 	.submitBtn {
-		font-size: 19px;
+		font-size: 21px;
 	}
 	.answerBtn {
-		font-size: 16px;
+		font-size: 17px;
 	}
 
 	.question {
-		font-size: 30px;
+		font-size: 35px;
 	}
 	.second::before {
 		
@@ -227,10 +227,10 @@ tr:nth-child(odd) {
 @media screen and (max-width: 420px) {
 
 	.submitBtn {
-		font-size: 15px;
+		font-size: 179x;
 	}
 	.answerBtn {
-		font-size: 11px;
+		font-size: 15px;
 	}
 
 	.question {
