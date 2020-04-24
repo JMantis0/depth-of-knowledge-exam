@@ -1,9 +1,27 @@
-Quiz application with multiple features
 
-Randomly ordered questions:  No two quizzes are the same.
+# Depth of Knowledge Exam: JavaScript Edition
 
-Answers are randomized to the four answer buttons  making the quiz more dynamic.  The question doesn't appear exactly the same.
+**[Run-Application!](https://jmantis0.github.io/depth-of-knowledge-exam/)**
 
-High score section that compares user's performance to other.
+![begin](assets/images/click-to-begin!.PNG)
 
-Animations and sound to make the quiz more immersive and fun.
+This fun, interactive quiz application tests your knowledge of several JavaScript topics!
+
+## Features
+
+**Score Tracking**  Scores for every quiz taken can optionally be recorded to the HIGH SCORES record.  These scores persist even after browser is closed or refreshed.  This allows you to track your progress compared to your previous performances and performances of other players.
+
+![Score-Tracking](assets/images/high-scores.PNG)
+
+**Tickdown timer**  Once a quiz begins your time is running!  In addition to testing your knowledge of concepts, this feature also allows you to track and gauge your speed.
+
+**REPLAY VALUE** *Dynamic randomization*:  This application is designed make each quiz fresh and different by presenting the questions in a random order.   Additionally, the answer choices for each question are positioned randomly among the buttons.  This means no two quizzes will be the same, and you can't just rely on muscle memory.
+
+**Immersive Content**  Application is designed with fun sounds and dynamic CSS styling, making it not only educational, but fun too!
+
+**Responsive Design**  Application is designed to be fully functional across browser sizes and mobile devices.
+
+### iphone 320x568
+
+![iphone](assets/images/iphon-320x568)
+
