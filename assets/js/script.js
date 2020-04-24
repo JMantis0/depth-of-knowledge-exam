@@ -35,6 +35,7 @@ $(document).ready(function () {
 		wrong:     () => $("#incorrectSound")[0].play(),
 		scoreGong: () => $("#scoreGong")[0].play(),
 		timeUp:    () => $("#timeUp")[0].play(),
+		complete:  () => $("#complete" + (jRandom(3)+1))[0].play(),
 	};
 
 	//Function newGame sets up the initial content of HTML elements and event listeners
@@ -235,6 +236,7 @@ $(document).ready(function () {
 		if(reason === "complete") {
 			$(".question").text("Examination Complete!");
 			$(".four").text(totalIncorrect).addClass("incorrect");
+			sounds.complete();
 		}
 		if(reason === "timeUp"){
 			$(".question").text("TIME EXPIRED.   GAME OVER.");
@@ -256,12 +258,11 @@ $(document).ready(function () {
 		$(".submitBtn").off();
 		$(".submitBtn").text("FINAL SCORE : " + finalScore + "%  CLICK TO RETRY").click(newGame);
 		$("#initialsModal").modal('show');
+		setTimeout(function() { $("#initial-input").focus() }, 500);
 		$(".saver").click(logScore).click(sounds.scoreGong);
 		$("#initial-input").keyup(function(event) {
-			console.log("inside initialInputevent")
 			if (event.keyCode === 13) {
-				console.log("inside if for keycode")
-				$(".saver").click()
+				$(".saver").click();
 			}
 		});
 	}
@@ -285,7 +286,6 @@ $(document).ready(function () {
 	}
 
 	function startTimer() {
-		console.log("inside start timer");
 		$("#timer").text("Time remaining: " + timeRemaining + "s")
 		timeRemaining -= 1;
 		quizInterval = setInterval(function () {
@@ -300,7 +300,6 @@ $(document).ready(function () {
 				clearInterval(quizInterval);
 				$("#timer").text("Time remaining: 0s");
 				endPhase("timeUp");
-				console.log(sounds.timeUp)
 			}
 
 		}, 1000);
