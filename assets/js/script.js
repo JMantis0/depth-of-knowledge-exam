@@ -18,11 +18,10 @@ $(document).ready(function () {
 
 	for(let i=1; i < storedScores.length; i++) {
 
-		//$("<tr>").append($("<td>").text(storedScores[i][0])).append($("<td>").text(storedScores[i][2])).append($("<td>").text(storedScores[i][3])).appendTo($("#highScores"));
-
 		let newRow = $("<tr class='added'>");
 		$("#highScores").append(newRow);
 		newRow.append($("<td>").text(storedScores[i][0])).append($("<td>").text(storedScores[i][1] + " %")).append($("<td>").text(storedScores[i][2] + " seconds"));
+
 	}
 
 	$("audio").each(function() {
@@ -60,21 +59,21 @@ $(document).ready(function () {
 		
 			{
 				name: "alert in JS",
-				question: "How do you write \"Hello World\" in an alert box?",
+				question: "Which writes \"Hello World\" in an alert box?",
 				correctAnswer: "alert(\"Hello World\");",
 				incorrectAnswers: ["alertBox(\"Hello World\");", "msg(\"Hello World\");", "msgBox(\"Hello World\");"]
 			},
 		
 			{
 				name: "Comment in JavaScript",
-				question: "How can you add a comment in a JavaScript?",
+				question: "Which is a comment in a JavaScript?",
 				correctAnswer: "// This is a comment",
 				incorrectAnswers: ["<!--This is a comment-->", "`This is a comment", "#This is a comment"]
 			},
 		
 			{
 				name: "FOR loop",
-				question: "How does a FOR loop start?",
+				question: "Which starts a FOR loop?",
 				correctAnswer: "for (i = 0; i < 10; i++)",
 				incorrectAnswers: ["for i = 1 to 5", "for (i <= 5; i++)", "for (i = 0; i <= 5)"]
 			},
@@ -109,14 +108,14 @@ $(document).ready(function () {
 		
 			{
 				name: "Variable types",
-				question: "This variable type holds a value of true or false:",
+				question: "Which variable type holds a value of true or false?",
 				correctAnswer: "Boolean",
-				incorrectAnswers: ["String", "Constant", "Integer"]
+				incorrectAnswers: ["String", "Array", "Integer"]
 			},
 		
 			{
 				name: "For loop question",
-				question: "What belongs inside a FOR-loop's argument?",
+				question: "Which of these belong inside a FOR-loop's argument?",
 				correctAnswer: "all of these",
 				incorrectAnswers: ["iterator", "condition", "initializer"]
 			},
@@ -136,15 +135,15 @@ $(document).ready(function () {
 	
 		];
 
-		totalIncorrect =0;
+		totalIncorrect = 0;
 		totalCorrect = 0;
 		totalQuestions = testItem.length;
-		timeRemaining = 60;
+		timeRemaining = 120;
 
 		$("a").click(function(){
 			$("#scoreModal").modal('show');
 		})
-		$(".question").text("Depth of Knowledge Exam. This exam is exactly " + testItem.length + " questions.");
+		$(".question").text("Depth of Knowledge: JavaScript Edition");
 		$(".answerBtn").text("_").addClass("off").removeClass("on active correct incorrect");
 		$(".submitBtn").text("CLICK TO BEGIN").addClass("on correct").click(startTimer).click(sounds.select).click(phaseOne);
 
@@ -230,14 +229,15 @@ $(document).ready(function () {
 
 	function endPhase(reason) {
 
-		$(".btn").removeClass("on active correct incorrect").off();
+		$(".submitBtn").removeClass("on active correct incorrect").off();
+		$(".answerBtn").removeClass("on active correct incorrect").off();
 
 		if(reason === "complete") {
 			$(".question").text("Examination Complete!");
 			$(".four").text(totalIncorrect).addClass("incorrect");
 		}
 		if(reason === "timeUp"){
-			$(".question").text("TIME EXPIRED. GAME OVER.");
+			$(".question").text("TIME EXPIRED.   GAME OVER.");
 			$(".four").text(totalIncorrect + " (" + (totalQuestions - (totalCorrect + totalIncorrect)) + " unanswered)").addClass("incorrect");
 		}
 
@@ -284,12 +284,14 @@ $(document).ready(function () {
 
 			$("#timer").text("Time remaining: " + timeRemaining + "s");
 			timeRemaining -= 1;
+			if (timeRemaining == 0) {
+				sounds.timeUp();
+			}
 			if (timeRemaining <= -1) {
 				timeRemaining = 0;
 				clearInterval(quizInterval);
 				$("#timer").text("Time remaining: 0s");
 				endPhase("timeUp");
-				sounds.timeUp();
 				console.log(sounds.timeUp)
 			}
 
