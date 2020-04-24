@@ -11,8 +11,6 @@ main {
 	height: 500px;
 }
 
-
-
 header::after {
 	content: " ";
 	display: block;
@@ -114,10 +112,13 @@ header::after {
 	}
 }
 
+.modal {
+	overflow: auto;
+}
+
 .modal-content {
 	border: 10px solid rgb(86, 10, 38);
 }
-
 
 .modal-header {
 	border-bottom: 10px solid rgb(86, 10, 38);
@@ -161,7 +162,6 @@ tr:nth-child(odd) {
 	background-color: #dddddd;
 }
 
-
 @media screen and (max-width: 768px) {
 	
 	.answerBtn {
@@ -192,7 +192,7 @@ tr:nth-child(odd) {
 		font-size: 21px;
 	}
 	.answerBtn {
-		font-size: 17px;
+		font-size: 21px;
 	}
 
 	.question {
@@ -220,11 +220,11 @@ tr:nth-child(odd) {
 		font-size: 15px;
 	}
 	.answerBtn {
-		font-size: 13px;
+		font-size: 16px;
 	}
 
 	.question {
-		font-size: 30px;
+		font-size: 27px;
 	}
 	.second::before {
 		

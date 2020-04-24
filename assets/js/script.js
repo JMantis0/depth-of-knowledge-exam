@@ -1,22 +1,25 @@
-let testItem = [];
-let currentItem = 0;
-let timeRemaining = 0;
-let totalCorrect = 0;
+// Global Variables
+let testItem = [];		//  Array of testItem objects.  Used to control HTML content and appearance.
+let currentItem = 0;	//  Index for testItem Array.
+let timeRemaining = 0;	//  Controls game timer. 
+let quizInterval = null;	
+let totalCorrect = 0;	//  Score tracking.
 let totalIncorrect = 0;
 let totalQuestions = 0;
-let finalScore = 0;
-let quizInterval = null;
-let storedScores = [].concat(JSON.parse(localStorage.getItem("scores")));
+let finalScore = 0;		
+let storedScores = [].concat(JSON.parse(localStorage.getItem("scores")));  //  Controls persistence of High Scores.
 
 $(document).ready(function () {
 
+	//  A random number generator.
 	function jRandom(x) {
 
 		return Math.floor(Math.random() * x);
 
 	}
 
-	for(let i=1; i < storedScores.length; i++) {
+	//  Add High Scores in localStorage to High Score modal.
+	for (let i = 1; i < storedScores.length; i++) {
 
 		let newRow = $("<tr class='added'>");
 		$("#highScores").append(newRow);
@@ -24,96 +27,94 @@ $(document).ready(function () {
 
 	}
 
-	$("audio").each(function() {
-		this.preload = "auto";
-	})
-
+	//  Define sounds object for audio events.
 	let sounds = {
 
 		select:    () => $("#menuSelect")[0].play(),
-		right:     () => $("#correctSound")[0].play(),
+		right: 	 () => $("#correctSound")[0].play(),
 		wrong:     () => $("#incorrectSound")[0].play(),
 		scoreGong: () => $("#scoreGong")[0].play(),
-		timeUp:    () => $("#timeUp")[0].play(),
-		complete:  () => $("#complete" + (jRandom(3)+1))[0].play(),
+		timeUp:	 () => $("#timeUp")[0].play(),
+		complete:  () => $("#complete" + (jRandom(3) + 1))[0].play(),
+
 	};
 
-	//Function newGame sets up the initial content of HTML elements and event listeners
+	//  Function newGame resets initial content of HTML, test items elements and event listeners.
 	function newGame() {
-
 
 		$("*").off();
 
-		$(".clearScores").click(function() {
+		$(".clearScores").click(function () {
 			$(".added").empty();
 			localStorage.removeItem("scores");
 		});
 
-		testItem= [
+		//  Exam question objects.  Add or remove question from here.
+		testItem = [
 
 			{
 				name: "Declare function",
-				question: "Which declares a function named turnRed?",
-				correctAnswer: "function turnRed() {}",
-				incorrectAnswers: ["function() turnRed {}", "function = turnRed() {}", "function turnRed{}"]
+				question: "Which declares a function named foo?",
+				correctAnswer: "function foo() {}",
+				incorrectAnswers: ["function() foo{}", "function = foo() {}", "function foo{}"]
 			},
-		
+
 			{
 				name: "alert in JS",
-				question: "Which writes \"Hello World\" in an alert box?",
-				correctAnswer: "alert(\"Hello World\");",
-				incorrectAnswers: ["alertBox(\"Hello World\");", "msg(\"Hello World\");", "msgBox(\"Hello World\");"]
+				question: "Which makes an alert box?",
+				correctAnswer: "alert();",
+				incorrectAnswers: ["alertBox();", "msg();", "msgBox();"]
 			},
-		
+
 			{
 				name: "Comment in JavaScript",
 				question: "Which is a comment in a JavaScript?",
-				correctAnswer: "// This is a comment",
-				incorrectAnswers: ["<!--This is a comment-->", "`This is a comment", "#This is a comment"]
+				correctAnswer: "// This",
+				incorrectAnswers: ["<!--This-->", "`This`", "#This"]
 			},
-		
+
 			{
 				name: "FOR loop",
 				question: "Which starts a FOR loop?",
-				correctAnswer: "for (i = 0; i < 10; i++)",
-				incorrectAnswers: ["for i = 1 to 5", "for (i <= 5; i++)", "for (i = 0; i <= 5)"]
+				correctAnswer: "for",
+				incorrectAnswers: ["four", "fore!", "4"]
 			},
-		
+
 			{
 				name: "jQuery question",
 				question: "The 'shorthand' version of JavaScript is called ____________.",
 				correctAnswer: "jQuery",
-				incorrectAnswers: ["HTML", "Boolean", "jScript"]
+				incorrectAnswers: ["HTML", "miniJava", "jScript"]
 			},
-		
+
 			{
 				name: "id Syntax Question",
 				question: "Which of these selects an element by ID?",
 				correctAnswer: "#",
 				incorrectAnswers: [".", "@", "$"]
 			},
-		
+
 			{
 				name: "class Syntax Question",
 				question: "Which of these select an element by class?",
 				correctAnswer: ".",
 				incorrectAnswers: ["#", "@", "$"]
 			},
-		
+
 			{
 				name: "Identify event listeners",
 				question: "Which of these can add an event listener?",
 				correctAnswer: "all of these",
 				incorrectAnswers: [".addEventListener()", ".on()", ".click()"]
 			},
-		
+
 			{
 				name: "Variable types",
 				question: "Which variable type holds a value of true or false?",
 				correctAnswer: "Boolean",
 				incorrectAnswers: ["String", "Array", "Integer"]
 			},
-		
+
 			{
 				name: "For loop question",
 				question: "Which of these belong inside a FOR-loop's argument?",
@@ -122,41 +123,45 @@ $(document).ready(function () {
 			},
 			{
 				name: "Linking .js files to html",
-				question: "Which links HTML to a file called \"script.js\"?",
-				correctAnswer: "<script src=\"script.js\">",
-				incorrectAnswers: ["<script href=\"script.js\">", "<script ref=\"script.js\">", "<script name=\"script.js\">"]
+				question: "Which <script> attribute links HTML to a js file?",
+				correctAnswer: "src",
+				incorrectAnswers: ["href", "rel", "name"]
 			},
-		
+
 			{
 				name: "DOM",
 				question: "What does the 'O' in DOM stand for?",
 				correctAnswer: "Object",
 				incorrectAnswers: ["Olive", "Ocelot", "Octogon"]
 			}
-	
+
 		];
 
+		//  Reset certain globals.
 		totalIncorrect = 0;
 		totalCorrect = 0;
 		totalQuestions = testItem.length;
 		timeRemaining = 120;
 
-		$("a").click(function(){
+		//  Adjust event listeners, CSS classes, and element content for a new game.
+		$("a").click(function () {
 			$("#scoreModal").modal('show');
 		})
 		$(".question").text("Depth of Knowledge: JavaScript Edition");
-		$(".answerBtn").text("_").addClass("off").removeClass("on active correct incorrect");
 		$(".submitBtn").text("CLICK TO BEGIN").addClass("on correct").click(startTimer).click(sounds.select).click(phaseOne);
+		$(".answerBtn").text("_").addClass("off").removeClass("on active correct incorrect");
 
 	}
 
+	//  Function phaseOne adjusts event listeners, CSS classes, and element content for Phase One of the game.
+	//  In every Phase One a new question and answers are displayed to the player.
 	function phaseOne() {
-		
-		$(".submitBtn").text("SELECT YOUR ANSWER").removeClass("correct incorrect on").off();
+
 		currentItem = jRandom(testItem.length)
 		let item = testItem[currentItem];
 		$(".question").text(item.question);
-		$(".answerBtn").addClass("active").removeClass("off on correct incorrect").attr("value", "false").click(phaseTwo);	
+		$(".submitBtn").text("SELECT YOUR ANSWER").removeClass("correct incorrect on").off();
+		$(".answerBtn").addClass("active").removeClass("off on correct incorrect").attr("value", "false").click(phaseTwo);
 		$(".answerBtn")[jRandom(4)].setAttribute("value", "true");
 
 		let wrongAnswers = item.incorrectAnswers;
@@ -172,12 +177,14 @@ $(document).ready(function () {
 			}
 
 		});
-			
+
 	}
 
-	function phaseTwo(event) {
+	//  Function phaseTwo adjusts event listeners, CSS classes, element content
+	//  and updates score and time variables based upon the player's responses.
+	//  In every Phase Two the player gets feedback for the answer s/he chose in Phase One.
+	function phaseTwo() {
 
-		event.preventDefault();
 		$(".answerBtn").removeClass("active").off();
 		$(".answerBtn").each(function () {
 
@@ -200,73 +207,87 @@ $(document).ready(function () {
 
 			$(".submitBtn").text("INCORRECT.  CLICK FOR NEXT QUESTION").addClass("incorrect on");
 			totalIncorrect += 1;
-			if(timeRemaining - 5 < 0) {
+			if (timeRemaining - 5 < 0) {
 				timeRemaining = 0;
 			}
-			else{
+			else {
 				timeRemaining -= 10;
 			}
 			$("#timer").text("Time remaining: " + timeRemaining + "s");
 		}
-		
+
 		$(".submitBtn").click(stateCheck);
 
 	}
 
-	function stateCheck(event) {
+	//  Function stateCheck checks whether to start a new phaseOne or to proceed to endPhase.
+	//  If starting a new Phase One, removes current testItem from array and generates an index for
+	//  the next testItem.
+	function stateCheck() {
 
-		event.preventDefault();
-		if(testItem.length !== 1) {
+		if (testItem.length !== 1) {
 
 			testItem.splice(currentItem, 1);
 			currentItem = jRandom(testItem.length);
 			phaseOne();
+
 		}
-		else{
+		else {
+
 			endPhase("complete");
+
 		}
-		
+
 	}
 
+	//  Function endPhase occurs when the quiz is over.  Can be called by stateCheck or
+	//  by startTimer.  Adjusts event listeners, CSS classes, element content. In every
+	//  endPhase the player scores are displayed.
 	function endPhase(reason) {
 
 		$(".submitBtn").removeClass("on active correct incorrect").off();
 		$(".answerBtn").removeClass("on active correct incorrect").off();
 
-		if(reason === "complete") {
+		if (reason === "complete") {
+			if (timeRemaining , 0) {timeRemaining = 0;}
 			$(".question").text("Examination Complete!");
 			$(".four").text(totalIncorrect).addClass("incorrect");
 			sounds.complete();
 		}
-		if(reason === "timeUp"){
+		if (reason === "timeUp") {
 			$(".question").text("TIME EXPIRED.   GAME OVER.");
 			$(".four").text(totalIncorrect + " (" + (totalQuestions - (totalCorrect + totalIncorrect)) + " unanswered)").addClass("incorrect");
 		}
 
-		finalScore = Math.round((totalCorrect / (totalQuestions))*100);
+		finalScore = Math.round((totalCorrect / (totalQuestions)) * 100);
 		$(".submitBtn").off();
 		$(".submitBtn").text("FINAL SCORE : " + finalScore + "%  CLICK TO SAVE").addClass("on");
 		$(".one").text("Total Correct").addClass("correct");
 		$(".two").text("Total Incorrect").addClass("incorrect");
-		$(".three").text(totalCorrect).addClass("correct");	
+		$(".three").text(totalCorrect).addClass("correct");
 		clearInterval(quizInterval);
 		$(".submitBtn").click(getName);
 
 	}
 
+	//  Function getName causes modal to appear where Player can enter a name
+	//  used for logging the quiz score.  Adjusts event listeners, CSS classes, element content.
 	function getName() {
 		$(".submitBtn").off();
 		$(".submitBtn").text("FINAL SCORE : " + finalScore + "%  CLICK TO RETRY").click(newGame);
 		$("#initialsModal").modal('show');
-		setTimeout(function() { $("#initial-input").focus() }, 500);
+		setTimeout(function () { $("#initial-input").focus() }, 500);
 		$(".saver").click(logScore).click(sounds.scoreGong);
-		$("#initial-input").keyup(function(event) {
+		$("#initial-input").keyup(function (event) {
 			if (event.keyCode === 13) {
 				$(".saver").click();
 			}
 		});
 	}
 
+	//  Function logScore adds the player name and score to the High Scores modal
+	//  and also adds the results to local storage. Then hides the input modal
+	//  and shows the High Score modal.  Adjusts event listeners, CSS classes, element content.
 	function logScore() {
 
 		$("initial-input").off();
@@ -276,8 +297,6 @@ $(document).ready(function () {
 		let newRow = $("<tr class='added'>");
 		$("#highScores").append(newRow);
 		newRow.append($("<td>").text(playerName)).append($("<td>").text(finalScore + " %")).append($("<td>").text(timeRemaining + " seconds"));
-		
-
 		storedScores.push(results);
 		localStorage.setItem("scores", JSON.stringify(storedScores));
 		$("#initial-input").val("");
@@ -285,13 +304,17 @@ $(document).ready(function () {
 		$("#scoreModal").modal('show');
 	}
 
+	//  Function startTimer keeps track of how much time the player has left.
+	//  When the time expires endPhase is called.
 	function startTimer() {
-		$("#timer").text("Time remaining: " + timeRemaining + "s")
 		timeRemaining -= 1;
+		$("#timer").text("Time remaining: " + timeRemaining + "s")
+		
 		quizInterval = setInterval(function () {
 
-			$("#timer").text("Time remaining: " + timeRemaining + "s");
 			timeRemaining -= 1;
+			$("#timer").text("Time remaining: " + timeRemaining + "s");
+			
 			if (timeRemaining == 0) {
 				sounds.timeUp();
 			}
@@ -306,6 +329,7 @@ $(document).ready(function () {
 
 	}
 
+	//  Start a new game!
 	newGame();
 
 });
