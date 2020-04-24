@@ -25,5 +25,5 @@ This fun, interactive quiz application tests your knowledge of several JavaScrip
 
 ### iphone 320x568
 
-![iphone](assets/images/iphone-320x568)
+![iphone](assets/images/iphone-320x568.PNG)
 
