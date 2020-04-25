@@ -52,7 +52,7 @@ $(document).ready(function () {
 		//  This makes sure the Clear Scores button only has click handler when
 		//  there is a high score to delete
 		$("#scoreModal").on("shown.bs.modal", function() {
-			console.log("inside 51");
+
 			if($("#highScores tr").length > 1) {
 				
 				$(".clearScores").click(sounds.shutdown).click(function () {
