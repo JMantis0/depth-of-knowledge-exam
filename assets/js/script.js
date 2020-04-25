@@ -47,18 +47,33 @@ $(document).ready(function () {
 
 		$("*").off();
 		$("#unanswered").remove();
-		$(".clearScores").click(sounds.shutdown).click(function () {
-			$(".added").animate({
-				'padding': "0px",
-				'width': "0px",
-				'font-size': "0px",
-				'margin': "0px"
-			}, 4800, function() {
-				$(".added").remove();
-				localStorage.removeItem("scores");
-			});
-		});
 
+
+		//  This makes sure the Clear Scores button only has click handler when
+		//  there is a high score to delete
+		$("#scoreModal").on("shown.bs.modal", function() {
+			console.log("inside 51");
+			if($("#highScores tr").length > 1) {
+				
+				$(".clearScores").click(sounds.shutdown).click(function () {
+	
+					$(".added").animate({
+						'padding': "0px",
+						'width': "0px",
+						'font-size': "0px",
+						'margin': "0px"
+					}, 4800, function() {
+						$(".added").remove();
+						localStorage.removeItem("scores");
+					});
+
+					$(".clearScores").off();
+
+				});
+	
+			}
+		});
+		
 		//  Exam question objects.  Add or remove question from here.
 		testItem = [
 
@@ -160,6 +175,7 @@ $(document).ready(function () {
 		})
 		$('#scoreModal').on('hide.bs.modal', function () {
 			sounds.woosh();
+			$(".clearScores").off();
 		 });
 		$(".question").text("Depth of Knowledge: JavaScript Edition");
 		$(".submitBtn").text("CLICK TO BEGIN").addClass("on correct").click(startTimer).click(sounds.select).click(phaseOne);
