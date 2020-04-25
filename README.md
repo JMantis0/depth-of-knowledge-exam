@@ -27,3 +27,6 @@ This fun, interactive quiz application tests your knowledge of several JavaScrip
 
 ![iphone](assets/images/iphone-320x568.PNG)
 
+## Contributors
+My thanks to [freesound.org](https://freesound.org/) for their free sound downloads and to [NCH Software](https://www.nch.com.au/wavepad/index.html?kw=free%20audio%20editor&gclid=CjwKCAjwv4_1BRAhEiwAtMDLssCOnw4cMOqnj9KlL7BQam6e8zr_m4ZUXx3Wel4fqAtpEvZ37K-6PBoCrLkQAvD_BwE) for their free audio editing software.
+

@@ -23,7 +23,7 @@ $(document).ready(function () {
 
 		let newRow = $("<tr class='added'>");
 		$("#highScores").append(newRow);
-		newRow.append($("<td>").text(storedScores[i][0])).append($("<td>").text(storedScores[i][1] + " %")).append($("<td>").text(storedScores[i][2] + " seconds"));
+		newRow.append($("<td class='added'>").text(storedScores[i][0])).append($("<td class='added'>").text(storedScores[i][1] + " %")).append($("<td class='added'>").text(storedScores[i][2] + " seconds"));
 
 	}
 
@@ -36,7 +36,9 @@ $(document).ready(function () {
 		scoreGong: () => $("#scoreGong")[0].play(),
 		timeUp:	 () => $("#timeUp")[0].play(),
 		complete:  () => $("#complete" + (jRandom(3) + 1))[0].play(),
-		click:	 () => $("#click")[0].play()
+		click:	 () => $("#click")[0].play(),
+		woosh:     () => $("#woosh")[0].play(),
+		shutdown:  () => $("#shutdown")[0].play()
 
 	};
 
@@ -45,9 +47,16 @@ $(document).ready(function () {
 
 		$("*").off();
 		$("#unanswered").remove();
-		$(".clearScores").click(function () {
-			$(".added").empty();
-			localStorage.removeItem("scores");
+		$(".clearScores").click(sounds.shutdown).click(function () {
+			$(".added").animate({
+				'padding': "0px",
+				'width': "0px",
+				'font-size': "0px",
+				'margin': "0px"
+			}, 4800, function() {
+				$(".added").remove();
+				localStorage.removeItem("scores");
+			});
 		});
 
 		//  Exam question objects.  Add or remove question from here.
@@ -147,7 +156,11 @@ $(document).ready(function () {
 		//  Adjust event listeners, CSS classes, and element content for a new game.
 		$("a").click(function () {
 			$("#scoreModal").modal('show');
+			sounds.woosh();
 		})
+		$('#scoreModal').on('hide.bs.modal', function () {
+			sounds.woosh();
+		 });
 		$(".question").text("Depth of Knowledge: JavaScript Edition");
 		$(".submitBtn").text("CLICK TO BEGIN").addClass("on correct").click(startTimer).click(sounds.select).click(phaseOne);
 		$(".answerBtn").text("_").addClass("off").removeClass("on active correct incorrect");
@@ -162,9 +175,9 @@ $(document).ready(function () {
 		let item = testItem[currentItem];
 		$(".question").text(item.question);
 		$(".submitBtn").text("SELECT YOUR ANSWER").removeClass("correct incorrect on").off();
-		$(".answerBtn").addClass("active").removeClass("off on correct incorrect").attr("value", "false").click(phaseTwo);
+		$(".answerBtn").addClass("active").removeClass("off on correct incorrect").attr("value", "false").click(phaseTwo).click(sounds.click);
 		$(".answerBtn")[jRandom(4)].setAttribute("value", "true");
-		$(".answerBtn").mouseover(sounds.click);
+		//$(".answerBtn").mouseover(sounds.click);
 
 		let wrongAnswers = item.incorrectAnswers;
 		$(".answerBtn").each(function () {
@@ -186,7 +199,7 @@ $(document).ready(function () {
 	//  and updates score and time variables based upon the player's responses.
 	//  In every Phase Two the player gets feedback for the answer s/he chose in Phase One.
 	function phaseTwo() {
-
+		
 		$(".answerBtn").removeClass("active").off();
 		$(".answerBtn").each(function () {
 
@@ -270,6 +283,7 @@ $(document).ready(function () {
 
 		finalScore = Math.round((totalCorrect / (totalQuestions)) * 100);
 		$(".submitBtn").off();
+		
 		$(".submitBtn").text("FINAL SCORE : " + finalScore + "%  CLICK TO SAVE").addClass("on");
 		$(".one").text("Total Correct").addClass("correct");
 		$(".two").text("Total Incorrect").addClass("incorrect");
@@ -286,6 +300,7 @@ $(document).ready(function () {
 		$(".submitBtn").off();
 		$(".submitBtn").text("FINAL SCORE : " + finalScore + "%  CLICK TO RETRY").click(newGame);
 		$("#initialsModal").modal('show');
+		sounds.woosh();
 		setTimeout(function () { $("#initial-input").focus() }, 500);
 		$(".saver").click(logScore).click(sounds.scoreGong);
 		$("#initial-input").keydown(function (event) {
@@ -312,7 +327,7 @@ $(document).ready(function () {
 		let results = [playerName, finalScore, timeRemaining]
 		let newRow = $("<tr class='added'>");
 		$("#highScores").append(newRow);
-		newRow.append($("<td>").text(playerName)).append($("<td>").text(finalScore + " %")).append($("<td>").text(timeRemaining + " seconds"));
+		newRow.append($("<td class='added'>").text(playerName)).append($("<td class='added'>").text(finalScore + " %")).append($("<td class='added'>").text(timeRemaining + " seconds"));
 		storedScores.push(results);
 		localStorage.setItem("scores", JSON.stringify(storedScores));
 		$("#initial-input").val("");
