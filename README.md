@@ -5,11 +5,11 @@
 
 ![begin](assets/images/click-to-begin!.PNG)
 
-This fun, interactive quiz application tests your knowledge of several JavaScript topics!
+This fun, interactive quiz application tests your knowledge of basic JavaScript concepts and syntax!
 
 ## Features
 
-**Score Tracking**  Scores for every quiz taken can optionally be recorded to the HIGH SCORES record.  These scores persist even after browser is closed or refreshed.  This allows you to track your progress compared to your previous performances and performances of other players.
+**Score Tracking**  Scores for every quiz taken can optionally be recorded to the HIGH SCORES record.  These scores persist even after the browser is closed or refreshed.  This allows you to track your progress compared to your previous performances and performances of other players.
 
 ![Score-Tracking](assets/images/high-scores.PNG)
 
@@ -17,7 +17,7 @@ This fun, interactive quiz application tests your knowledge of several JavaScrip
 
 ![timer](assets/images/timer.PNG)
 
-**REPLAY VALUE** *Dynamic randomization*:  This application is designed make each quiz fresh and different by presenting the questions in a random order.   Additionally, the answer choices for each question are positioned randomly among the buttons.  This means no two quizzes will be the same, and you can't just rely on muscle memory.
+**REPLAY VALUE** *Dynamic randomization*:  This application is designed to make each quiz fresh and different by presenting the questions in a random order.   Additionally, the answer choices for each question are positioned randomly among the answer buttons.  This means no two quizzes will be the same, and you can't just rely on muscle memory.
 
 **Immersive Content**  Application is designed with fun sounds and dynamic CSS styling, making it not only educational, but fun too!
 
