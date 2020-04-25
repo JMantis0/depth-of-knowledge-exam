@@ -69,7 +69,7 @@ header::after {
 }
 
 .incorrect {
-	background-color: red;
+	background-color: rgb(255, 52, 52);
 }
 
 .answerBtn.incorrect {
@@ -164,6 +164,10 @@ tr:nth-child(odd) {
 
 @media screen and (max-width: 768px) {
 	
+	.answerBtn, .submitBtn {
+		padding-top: 22px;
+	}
+
 	.answerBtn {
 		font-size: 24px;
 	}
@@ -188,6 +192,9 @@ tr:nth-child(odd) {
 
 @media screen and (max-width: 576px) {
 
+	.answerBtn, .submitBtn {
+		padding-top: 22px;
+	}
 	.submitBtn {
 		font-size: 21px;
 	}
@@ -216,6 +223,9 @@ tr:nth-child(odd) {
 
 @media screen and (max-width: 420px) {
 
+	.answerBtn, .submitBtn {
+		padding-top: 18px;
+	}
 	.submitBtn {
 		font-size: 15px;
 	}
