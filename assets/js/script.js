@@ -36,6 +36,7 @@ $(document).ready(function () {
 		scoreGong: () => $("#scoreGong")[0].play(),
 		timeUp:	 () => $("#timeUp")[0].play(),
 		complete:  () => $("#complete" + (jRandom(3) + 1))[0].play(),
+		click:	 () => $("#click")[0].play()
 
 	};
 
@@ -43,7 +44,7 @@ $(document).ready(function () {
 	function newGame() {
 
 		$("*").off();
-
+		$("#unanswered").remove();
 		$(".clearScores").click(function () {
 			$(".added").empty();
 			localStorage.removeItem("scores");
@@ -51,13 +52,6 @@ $(document).ready(function () {
 
 		//  Exam question objects.  Add or remove question from here.
 		testItem = [
-
-			{
-				name: "Declare function",
-				question: "Which declares a function named foo?",
-				correctAnswer: "function foo() {}",
-				incorrectAnswers: ["function() foo{}", "function = foo() {}", "function foo{}"]
-			},
 
 			{
 				name: "alert in JS",
@@ -104,8 +98,8 @@ $(document).ready(function () {
 			{
 				name: "Identify event listeners",
 				question: "Which of these can add an event listener?",
-				correctAnswer: "all of these",
-				incorrectAnswers: [".addEventListener()", ".on()", ".click()"]
+				correctAnswer: ".on()",
+				incorrectAnswers: [ ".off()", ".up()", ".down()"]
 			},
 
 			{
@@ -133,6 +127,13 @@ $(document).ready(function () {
 				question: "What does the 'O' in DOM stand for?",
 				correctAnswer: "Object",
 				incorrectAnswers: ["Olive", "Ocelot", "Octogon"]
+			},
+
+			{
+				name: "Conditional Q",
+				question: "let x = !!!true;  What is the value of x?",
+				correctAnswer: "false",
+				incorrectAnswers: ["true", "null", "supertrue"]
 			}
 
 		];
@@ -163,6 +164,7 @@ $(document).ready(function () {
 		$(".submitBtn").text("SELECT YOUR ANSWER").removeClass("correct incorrect on").off();
 		$(".answerBtn").addClass("active").removeClass("off on correct incorrect").attr("value", "false").click(phaseTwo);
 		$(".answerBtn")[jRandom(4)].setAttribute("value", "true");
+		$(".answerBtn").mouseover(sounds.click);
 
 		let wrongAnswers = item.incorrectAnswers;
 		$(".answerBtn").each(function () {
@@ -200,12 +202,18 @@ $(document).ready(function () {
 		if (this.value === "true") {
 
 			$(".submitBtn").text("CORRECT!  CLICK FOR NEXT QUESTION").addClass("correct on");
+			if (testItem.length == 1) {
+				$(".submitBtn").text("CORRECT! CLICK TO COMPLETE EXAM");
+			}
 			totalCorrect += 1;
 
 		}
 		else {
 
 			$(".submitBtn").text("INCORRECT.  CLICK FOR NEXT QUESTION").addClass("incorrect on");
+			if (testItem.length == 1) {
+				$(".submitBtn").text("INCORRECT! CLICK TO COMPLETE EXAM");
+			}
 			totalIncorrect += 1;
 			if (timeRemaining - 5 < 0) {
 				timeRemaining = 0;
@@ -229,6 +237,7 @@ $(document).ready(function () {
 
 			testItem.splice(currentItem, 1);
 			currentItem = jRandom(testItem.length);
+			sounds.select();
 			phaseOne();
 
 		}
@@ -256,7 +265,7 @@ $(document).ready(function () {
 		}
 		if (reason === "timeUp") {
 			$(".question").text("TIME EXPIRED.   GAME OVER.");
-			$(".four").text(totalIncorrect + " (" + (totalQuestions - (totalCorrect + totalIncorrect)) + " unanswered)").addClass("incorrect");
+			$(".four").text(totalIncorrect).addClass("incorrect").append($("<div id='unanswered'>").text(" (" + (totalQuestions - (totalCorrect + totalIncorrect)) + " unanswered)"));
 		}
 
 		finalScore = Math.round((totalCorrect / (totalQuestions)) * 100);
@@ -273,15 +282,22 @@ $(document).ready(function () {
 	//  Function getName causes modal to appear where Player can enter a name
 	//  used for logging the quiz score.  Adjusts event listeners, CSS classes, element content.
 	function getName() {
+
 		$(".submitBtn").off();
 		$(".submitBtn").text("FINAL SCORE : " + finalScore + "%  CLICK TO RETRY").click(newGame);
 		$("#initialsModal").modal('show');
 		setTimeout(function () { $("#initial-input").focus() }, 500);
 		$(".saver").click(logScore).click(sounds.scoreGong);
-		$("#initial-input").keyup(function (event) {
+		$("#initial-input").keydown(function (event) {
 			if (event.keyCode === 13) {
 				$(".saver").click();
 			}
+		});
+		$("#initial-input").keydown(function(event) {
+			if(event.keyCode == 16) {
+				return;
+			}
+			sounds.click();
 		});
 	}
 

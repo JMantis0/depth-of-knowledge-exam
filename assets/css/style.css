@@ -57,9 +57,14 @@ header::after {
 .submitBtn, .answerBtn {
 	padding-top: 25px;
 	font-family: 'Baloo Tammudu 2', cursive;
+	font-weight: 900;
 	background-color: aqua;
 	border: 5px solid rgb(86, 10, 38);
 	font-size: 28px;
+}
+
+#unanswered {
+	display: inline;
 }
 
 .answerBtn {
@@ -93,7 +98,7 @@ header::after {
 .active:hover {
 	background-color: rgb(62, 255, 62);
 	box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
-	transform: scale(0.95);
+	transform: scale(1.05);
 }
 
 @keyframes pulse {
@@ -198,8 +203,13 @@ tr:nth-child(odd) {
 	.submitBtn {
 		font-size: 21px;
 	}
+
 	.answerBtn {
 		font-size: 21px;
+	}
+
+	#unanswered {
+			font-size: 16px;
 	}
 
 	.question {
@@ -226,11 +236,17 @@ tr:nth-child(odd) {
 	.answerBtn, .submitBtn {
 		padding-top: 18px;
 	}
+
+
 	.submitBtn {
 		font-size: 15px;
 	}
 	.answerBtn {
-		font-size: 16px;
+		font-size: 18px;
+	}
+
+	#unanswered {
+		font-size: 14px;
 	}
 
 	.question {
@@ -251,6 +267,8 @@ tr:nth-child(odd) {
 	}
 	
 }
+
+
 	
 
 
