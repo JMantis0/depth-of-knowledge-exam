@@ -314,7 +314,7 @@ $(document).ready(function () {
 	function getName() {
 
 		$(".submitBtn").off();
-		$(".submitBtn").text("FINAL SCORE : " + finalScore + "%  CLICK TO RETRY").click(newGame);
+		$(".submitBtn").text("FINAL SCORE : " + finalScore + "%  CLICK TO RETRY").click(newGame).click(sounds.click);
 		$("#initialsModal").modal('show');
 		sounds.woosh();
 		setTimeout(function () { $("#initial-input").focus() }, 500);
