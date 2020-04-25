@@ -59,7 +59,7 @@ $(document).ready(function () {
 	
 					$(".added").animate({
 						'padding': "0px",
-						'width': "0px",
+						'height': "0px",
 						'font-size': "0px",
 						'margin': "0px"
 					}, 4800, function() {
