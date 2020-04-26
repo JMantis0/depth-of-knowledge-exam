@@ -199,7 +199,9 @@ $(document).ready(function () {
 			if($("#highScores tr").length > 1) {
 				
 				$(".clearScores").click(sounds.shutdown).click(function () {
-	
+					
+					localStorage.removeItem("scores");
+					storedScores = [];
 					//  Fun animation, fun sound, and removal of localStorage/High Score elements.
 					$(".added").animate({
 
@@ -211,8 +213,6 @@ $(document).ready(function () {
 					}, 4800, function() {
 
 						$(".added").remove();
-						localStorage.removeItem("scores");
-						storedScores = [];
 
 					});
 
