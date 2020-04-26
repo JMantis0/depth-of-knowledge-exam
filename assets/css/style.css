@@ -36,7 +36,7 @@ header::after {
 .question {
 	font-family: 'Open Sans', sans-serif;
 	font-weight: 700;
-	font-size: 50px;
+	font-size: 40px;
 	padding: 20px;
 	width: 100%;
 	height: 200px;
@@ -191,57 +191,55 @@ tr:nth-child(odd) {
 }
 
 @media screen and (max-width: 768px) {
-	
-	.answerBtn, .submitBtn {
-		padding-top: 22px;
+
+	.question {
+		font-size: 35px;
 	}
 
-	.answerBtn {
-		font-size: 24px;
+	.answerBtn, .submitBtn {
+		padding-top: 22px;
 	}
 
 	.container {
 		width: 95%
 	}
-
-	.question {
-		font-size: 40px;
-	}
+	
 	.second::before {
 		
 		margin-bottom: 30px;
 		margin-top: 30px;
 	}
+
 	header::after {
-		content: " ";
 		margin-bottom: 30px;   
 	}
 
-        .modal-header{
-	        font-size: 28px;        
-         }
+	.modal-header{
+		font-size: 28px;        
+	}
 
 }
 
 @media screen and (max-width: 576px) {
 
+	.question {
+		font-size: 35px;
+	}
+	
 	.answerBtn, .submitBtn {
 		padding-top: 22px;
 	}
+
 	.submitBtn {
 		font-size: 21px;
 	}
 
 	.answerBtn {
-		font-size: 21px;
+		font-size: 25px;
 	}
 
 	#unanswered {
-			font-size: 16px;
-	}
-
-	.question {
-		font-size: 35px;
+		font-size: 16px;
 	}
 
 	.second::before {
@@ -263,32 +261,40 @@ tr:nth-child(odd) {
 
 }
 
+@media screen and (max-width: 460px) {
+	.question {
+		font-size: 30px;
+	}
+}
+
 @media screen and (max-width: 420px) {
+
+	.question {
+		font-size: 25px
+	}
 
 	.answerBtn, .submitBtn {
 		padding-top: 18px;
 	}
 
-
-	.submitBtn {
+	.submitBtn{
 		font-size: 15px;
 	}
+
 	.answerBtn {
-		font-size: 18px;
+		font-size: 22px;
 	}
 
 	#unanswered {
 		font-size: 14px;
 	}
-
-	.question {
-		font-size: 27px;
-	}
+	
 	.second::before {
 		
 		margin-bottom: 20px;
 		margin-top: 20px;
 	}
+
 	header::after {
 		content: " ";
 		margin-bottom: 20px;   
@@ -298,9 +304,15 @@ tr:nth-child(odd) {
 		height: 170px;
 	}
 
-        .modal-header{
-	        font-size: 26px;        
-        }
+	th {
+		font-size: 15px;
+	}
+}
 
-	
+@media screen and (max-width: 369px) {
+
+	.question {
+		font-size: 23px;
+	}
+
 }
