@@ -315,4 +315,8 @@ tr:nth-child(odd) {
 		font-size: 23px;
 	}
 
+	.one, .two {
+		font-size: 18px;
+	}
+
 }
