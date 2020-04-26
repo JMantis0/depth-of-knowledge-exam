@@ -19,7 +19,7 @@ $(document).ready(function () {
 	}
 
 	//  Function sortScores sorts storedScores. 
-	//  NOTE: index 1 is Score %.  index 2 is Time Remaining.
+	//  NOTE: Index 1 is Score %.  Index 2 is Time Remaining.
 	//  x and y are elements in storedScores being compared to eachother.
 	function sortScores() {
 
@@ -212,6 +212,7 @@ $(document).ready(function () {
 
 						$(".added").remove();
 						localStorage.removeItem("scores");
+						storedScores = [];
 
 					});
 
@@ -236,7 +237,7 @@ $(document).ready(function () {
 		let item = testItem[currentItem];
 		$(".question").text(item.question);
 		$(".submitBtn").text("SELECT YOUR ANSWER").removeClass("correct incorrect on").off();
-		$(".answerBtn").attr("value", "false")
+		$(".answerBtn").attr("value", "false");
 		$(".answerBtn")[jRandom(4)].setAttribute("value", "true");
 
 		$(".answerBtn").each(function () {
@@ -361,7 +362,7 @@ $(document).ready(function () {
 
 	}
 
-	//  Function getName causes shows modal for player to input a name.
+	//  Function getName shows modal for player to input a name.
 	function getName() {
 
 		$(".submitBtn").off();
@@ -374,18 +375,24 @@ $(document).ready(function () {
 
 		}, 500);
 
-		
-
 		$("#initial-input").keydown(function (event) {
+
 			if (event.keyCode === 13) {
+
 				$(".saver").click();
+
 			}
+
 		});
 
 		$("#initial-input").keydown(function(event) {
+
 			if(event.keyCode == 16) {
+
 				return;
+
 			}
+
 			sounds.click();
 		});
 
@@ -407,6 +414,7 @@ $(document).ready(function () {
 		storedScores.push(results);
 		localStorage.setItem("scores", JSON.stringify(storedScores));
 		renderScores();
+
 		$("#initial-input").val("");
 		$("#initialsModal").modal('hide');	
 		$("#scoreModal").modal('show');
@@ -415,6 +423,7 @@ $(document).ready(function () {
 
 	//  Function startTimer tracks the player's time left and ends the game if time expires.
 	function startTimer() {
+
 		timeRemaining -= 1;
 		$("#timer").text("Time remaining: " + timeRemaining + "s")
 		
