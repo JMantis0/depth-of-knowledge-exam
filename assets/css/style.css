@@ -243,6 +243,7 @@ tr:nth-child(odd) {
 	.question {
 		font-size: 35px;
 	}
+
 	.second::before {
 		margin-bottom: 20px;
 		margin-top: 20px;
@@ -303,11 +304,3 @@ tr:nth-child(odd) {
 
 	
 }
-
-
-	
-
-
-
-
-
