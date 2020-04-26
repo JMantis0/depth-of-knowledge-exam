@@ -91,16 +91,16 @@ header::after {
 	background-color:rgb(90, 91, 90);
 }
 
-.on {
-	box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
-	transform: scale(1);
-	animation: pulse 2s infinite;
-}
-
 .active:hover {
 	background-color: rgb(62, 255, 62);
 	box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
 	transform: scale(1.05);
+}
+
+.on {
+	box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+	transform: scale(1);
+	animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
@@ -119,6 +119,7 @@ header::after {
 	}
 }
 
+/* gives modal a scroll bar if content doesnt fit */
 .modal {
 	overflow: auto;
 }
@@ -185,7 +186,6 @@ th {
 	font-size: 25px;
 }
 
-
 tr:nth-child(odd) {
 	background-color: #dddddd;
 }
@@ -244,7 +244,6 @@ tr:nth-child(odd) {
 		font-size: 35px;
 	}
 	.second::before {
-		
 		margin-bottom: 20px;
 		margin-top: 20px;
 	}

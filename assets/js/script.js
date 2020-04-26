@@ -18,16 +18,17 @@ $(document).ready(function () {
 
 	}
 
-	//  Add High Scores in localStorage to High Score modal.
+	//  Place High Scores from localStorage into newly created elements inside High Score modal.
 	for (let i = 1; i < storedScores.length; i++) {
 
 		let newRow = $("<tr class='added'>");
 		$("#highScores").append(newRow);
+		//NOTE:  class 'added' is used later by #clearScores to select elements to remove.
 		newRow.append($("<td class='added'>").text(storedScores[i][0])).append($("<td class='added'>").text(storedScores[i][1] + " %")).append($("<td class='added'>").text(storedScores[i][2] + " seconds"));
 
 	}
 
-	//  Define sounds object for audio events.
+	//  Sounds are fun.
 	let sounds = {
 
 		select:    () => $("#menuSelect")[0].play(),
@@ -42,39 +43,10 @@ $(document).ready(function () {
 
 	};
 
-	//  Function newGame resets initial content of HTML, test items elements and event listeners.
+	//  Function newGame sets up content of HTML, testItems element,s and event listeners for a new game.
 	function newGame() {
-
-		$("*").off();
-		$("#unanswered").remove();
-
-
-		//  This makes sure the Clear Scores button only has click handler when
-		//  there is a high score to delete
-		$("#scoreModal").on("shown.bs.modal", function() {
-
-			if($("#highScores tr").length > 1) {
-				
-				$(".clearScores").click(sounds.shutdown).click(function () {
-	
-					$(".added").animate({
-						'padding': "0px",
-						'height': "0px",
-						'font-size': "0px",
-						'margin': "0px"
-					}, 4800, function() {
-						$(".added").remove();
-						localStorage.removeItem("scores");
-					});
-
-					$(".clearScores").off();
-
-				});
-	
-			}
-		});
 		
-		//  Exam question objects.  Add or remove question from here.
+		//  Exam question objects.
 		testItem = [
 
 			{
@@ -139,6 +111,7 @@ $(document).ready(function () {
 				correctAnswer: "all of these",
 				incorrectAnswers: ["iterator", "condition", "initializer"]
 			},
+
 			{
 				name: "Linking .js files to html",
 				question: "Which <script> attribute links HTML to a js file?",
@@ -168,52 +141,88 @@ $(document).ready(function () {
 		totalQuestions = testItem.length;
 		timeRemaining = 120;
 
-		//  Adjust event listeners, CSS classes, and element content for a new game.
+		$("*").off();
+		$("#unanswered").remove();
+
+		//  Add fun sounds for High Score link (only <a> on the site).
 		$("a").click(function () {
+
 			$("#scoreModal").modal('show');
 			sounds.woosh();
-		})
+
+		});
 		$('#scoreModal').on('hide.bs.modal', function () {
+
 			sounds.woosh();
 			$(".clearScores").off();
-		 });
+
+		});
+
+		//  Ensure Clear Scores button only works when there is a high score to delete.
+		$("#scoreModal").on("shown.bs.modal", function() {
+
+			if($("#highScores tr").length > 1) {
+				
+				$(".clearScores").click(sounds.shutdown).click(function () {
+	
+					//  Fun animation, fun sound, and removal of localStorage/High Score elements.
+					$(".added").animate({
+
+						'padding': "0px",
+						'height': "0px",
+						'font-size': "0px",
+						'margin': "0px"
+
+					}, 4800, function() {
+
+						$(".added").remove();
+						localStorage.removeItem("scores");
+
+					});
+
+					$(".clearScores").off();
+
+				});
+	
+			}
+		});
+
 		$(".question").text("Depth of Knowledge: JavaScript Edition");
-		$(".submitBtn").text("CLICK TO BEGIN").addClass("on correct").click(startTimer).click(sounds.select).click(phaseOne);
 		$(".answerBtn").text("_").addClass("off").removeClass("on active correct incorrect");
+		$(".submitBtn").text("CLICK TO BEGIN").addClass("on correct").click(startTimer).click(sounds.select).click(phaseOne);
+		
 
 	}
 
-	//  Function phaseOne adjusts event listeners, CSS classes, and element content for Phase One of the game.
-	//  In every Phase One a new question and answers are displayed to the player.
+	//  Function phaseOne presents a new question and its answer choices to the player.
 	function phaseOne() {
 
 		currentItem = jRandom(testItem.length)
 		let item = testItem[currentItem];
 		$(".question").text(item.question);
 		$(".submitBtn").text("SELECT YOUR ANSWER").removeClass("correct incorrect on").off();
-		$(".answerBtn").addClass("active").removeClass("off on correct incorrect").attr("value", "false").click(phaseTwo).click(sounds.click);
+		$(".answerBtn").attr("value", "false")
 		$(".answerBtn")[jRandom(4)].setAttribute("value", "true");
-		//$(".answerBtn").mouseover(sounds.click);
 
-		let wrongAnswers = item.incorrectAnswers;
 		$(".answerBtn").each(function () {
 
 			if (this.value === "true") {
 				$(this).text(item.correctAnswer).click(sounds.right);
 			}
 			else {
-				let x = jRandom(wrongAnswers.length);
-				$(this).text(wrongAnswers[x]).click(sounds.wrong);
-				wrongAnswers.splice(x, 1);
+				let x = jRandom(item.incorrectAnswers.length);
+				$(this).text(item.incorrectAnswers[x]).click(sounds.wrong);
+				item.incorrectAnswers.splice(x, 1);
 			}
 
 		});
 
+		$(".answerBtn").addClass("active").removeClass("off on correct incorrect").click(sounds.click).click(phaseTwo);
+
 	}
 
-	//  Function phaseTwo adjusts event listeners, CSS classes, element content
-	//  and updates score and time variables based upon the player's responses.
-	//  In every Phase Two the player gets feedback for the answer s/he chose in Phase One.
+	//  Function phaseTwo gives feedback to player and updates score/time variable
+	//  base on player's choice in phaseOne.
 	function phaseTwo() {
 		
 		$(".answerBtn").removeClass("active").off();
@@ -230,36 +239,42 @@ $(document).ready(function () {
 
 		if (this.value === "true") {
 
-			$(".submitBtn").text("CORRECT!  CLICK FOR NEXT QUESTION").addClass("correct on");
-			if (testItem.length == 1) {
-				$(".submitBtn").text("CORRECT! CLICK TO COMPLETE EXAM");
-			}
 			totalCorrect += 1;
+
+			$(".submitBtn").text("CORRECT!  CLICK FOR NEXT QUESTION").addClass("correct on");
+
+			if (testItem.length == 1) {
+
+				$(".submitBtn").text("CORRECT! CLICK TO COMPLETE EXAM");
+
+			}
 
 		}
 		else {
 
+			totalIncorrect += 1;
+			timeRemaining -= 10;
+
 			$(".submitBtn").text("INCORRECT.  CLICK FOR NEXT QUESTION").addClass("incorrect on");
+
 			if (testItem.length == 1) {
 				$(".submitBtn").text("INCORRECT! CLICK TO COMPLETE EXAM");
 			}
-			totalIncorrect += 1;
-			if (timeRemaining - 5 < 0) {
+
+			if (timeRemaining < 0) {
 				timeRemaining = 0;
 			}
-			else {
-				timeRemaining -= 10;
-			}
+
 			$("#timer").text("Time remaining: " + timeRemaining + "s");
+
 		}
 
 		$(".submitBtn").click(stateCheck);
 
 	}
 
-	//  Function stateCheck checks whether to start a new phaseOne or to proceed to endPhase.
-	//  If starting a new Phase One, removes current testItem from array and generates an index for
-	//  the next testItem.
+	//  Function stateCheck either starts a new phaseOne with a new question or
+	//  ends the current game if there are no questions left.
 	function stateCheck() {
 
 		if (testItem.length !== 1) {
@@ -278,28 +293,30 @@ $(document).ready(function () {
 
 	}
 
-	//  Function endPhase occurs when the quiz is over.  Can be called by stateCheck or
-	//  by startTimer.  Adjusts event listeners, CSS classes, element content. In every
-	//  endPhase the player scores are displayed.
+	//  Function endPhase ends the current game based on the reason passed to it.
+	//  The player is given feedback and offered to save his/her score.
 	function endPhase(reason) {
 
 		$(".submitBtn").removeClass("on active correct incorrect").off();
 		$(".answerBtn").removeClass("on active correct incorrect").off();
 
 		if (reason === "complete") {
-			if (timeRemaining , 0) {timeRemaining = 0;}
+
 			$(".question").text("Examination Complete!");
 			$(".four").text(totalIncorrect).addClass("incorrect");
 			sounds.complete();
+
 		}
+
 		if (reason === "timeUp") {
+
 			$(".question").text("TIME EXPIRED.   GAME OVER.");
 			$(".four").text(totalIncorrect).addClass("incorrect").append($("<div id='unanswered'>").text(" (" + (totalQuestions - (totalCorrect + totalIncorrect)) + " unanswered)"));
+
 		}
 
 		finalScore = Math.round((totalCorrect / (totalQuestions)) * 100);
 		$(".submitBtn").off();
-		
 		$(".submitBtn").text("FINAL SCORE : " + finalScore + "%  CLICK TO SAVE").addClass("on");
 		$(".one").text("Total Correct").addClass("correct");
 		$(".two").text("Total Incorrect").addClass("incorrect");
@@ -309,50 +326,64 @@ $(document).ready(function () {
 
 	}
 
-	//  Function getName causes modal to appear where Player can enter a name
-	//  used for logging the quiz score.  Adjusts event listeners, CSS classes, element content.
+	//  Function getName causes shows modal for player to input a name.
 	function getName() {
 
 		$(".submitBtn").off();
-		$(".submitBtn").text("FINAL SCORE : " + finalScore + "%  CLICK TO RETRY").click(newGame).click(sounds.click);
 		$("#initialsModal").modal('show');
 		sounds.woosh();
-		setTimeout(function () { $("#initial-input").focus() }, 500);
-		$(".saver").click(logScore).click(sounds.scoreGong);
+
+		setTimeout(function () { 
+
+			$("#initial-input").focus() ;
+
+		}, 500);
+
+		
+
 		$("#initial-input").keydown(function (event) {
 			if (event.keyCode === 13) {
 				$(".saver").click();
 			}
 		});
+
 		$("#initial-input").keydown(function(event) {
 			if(event.keyCode == 16) {
 				return;
 			}
 			sounds.click();
 		});
+
+		$(".saver").click(sounds.scoreGong).click(logScore);
+		$(".submitBtn").text("FINAL SCORE : " + finalScore + "%  CLICK TO RETRY").click(sounds.click).click(newGame);
+
 	}
 
-	//  Function logScore adds the player name and score to the High Scores modal
-	//  and also adds the results to local storage. Then hides the input modal
-	//  and shows the High Score modal.  Adjusts event listeners, CSS classes, element content.
+	//  Function logScore adds the player's stats for his/her current
+	//  game to localStorage and to the High Score modal.
+	//  NOTE:  This function is purely optional and may never be called.
 	function logScore() {
-
+		
 		$("initial-input").off();
 		$(".saver").off();
+		
 		let playerName = $("#initial-input").val();
 		let results = [playerName, finalScore, timeRemaining]
 		let newRow = $("<tr class='added'>");
+
 		$("#highScores").append(newRow);
 		newRow.append($("<td class='added'>").text(playerName)).append($("<td class='added'>").text(finalScore + " %")).append($("<td class='added'>").text(timeRemaining + " seconds"));
+		
 		storedScores.push(results);
 		localStorage.setItem("scores", JSON.stringify(storedScores));
+
 		$("#initial-input").val("");
-		$("#initialsModal").modal('hide');
+		$("#initialsModal").modal('hide');	
 		$("#scoreModal").modal('show');
+
 	}
 
-	//  Function startTimer keeps track of how much time the player has left.
-	//  When the time expires endPhase is called.
+	//  Function startTimer tracks the player's time left and ends the game if time expires.
 	function startTimer() {
 		timeRemaining -= 1;
 		$("#timer").text("Time remaining: " + timeRemaining + "s")
@@ -376,7 +407,7 @@ $(document).ready(function () {
 
 	}
 
-	//  Start a new game!
+	//  Start the game already!
 	newGame();
 
 });
