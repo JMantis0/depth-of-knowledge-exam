@@ -188,7 +188,7 @@ $(document).ready(function () {
 		});
 
 		$(".question").text("Depth of Knowledge: JavaScript Edition");
-		$(".answerBtn").text("_").addClass("off").removeClass("on active correct incorrect");
+		$(".answerBtn").text("_").addClass("off").removeClass("on active correct incorrect smaller");
 		$(".submitBtn").text("CLICK TO BEGIN").addClass("on correct").click(startTimer).click(sounds.select).click(phaseOne);
 		
 
@@ -318,8 +318,8 @@ $(document).ready(function () {
 		finalScore = Math.round((totalCorrect / (totalQuestions)) * 100);
 		$(".submitBtn").off();
 		$(".submitBtn").text("FINAL SCORE : " + finalScore + "%  CLICK TO SAVE").addClass("on");
-		$(".one").text("Total Correct").addClass("correct");
-		$(".two").text("Total Incorrect").addClass("incorrect");
+		$(".one").text("Total Correct").addClass("correct smaller");
+		$(".two").text("Total Incorrect").addClass("incorrect smaller");
 		$(".three").text(totalCorrect).addClass("correct");
 		clearInterval(quizInterval);
 		$(".submitBtn").click(getName);
