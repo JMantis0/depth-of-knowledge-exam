@@ -269,6 +269,13 @@ tr:nth-child(odd) {
 
 @media screen and (max-width: 420px) {
 
+	#timer {
+		margin-top: 5px;
+	}
+
+	a, #timer {
+		font-size: 12px;
+	}
 	.question {
 		font-size: 25px
 	}
