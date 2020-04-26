@@ -7,7 +7,7 @@ let totalCorrect = 0;	//  Score tracking.
 let totalIncorrect = 0;
 let totalQuestions = 0;
 let finalScore = 0;		
-let storedScores = [].concat(JSON.parse(localStorage.getItem("scores")));  //  Controls persistence of High Scores.
+let storedScores = [];	//  Controls persistence of High Scores.
 
 $(document).ready(function () {
 
@@ -18,13 +18,46 @@ $(document).ready(function () {
 
 	}
 
-	//  Place High Scores from localStorage into newly created elements inside High Score modal.
-	for (let i = 1; i < storedScores.length; i++) {
+	//  Function sortScores sorts storedScores. 
+	//  NOTE: index 1 is Score %.  index 2 is Time Remaining.
+	//  x and y are elements in storedScores being compared to eachother.
+	function sortScores() {
 
-		let newRow = $("<tr class='added'>");
-		$("#highScores").append(newRow);
-		//NOTE:  class 'added' is used later by #clearScores to select elements to remove.
-		newRow.append($("<td class='added'>").text(storedScores[i][0])).append($("<td class='added'>").text(storedScores[i][1] + " %")).append($("<td class='added'>").text(storedScores[i][2] + " seconds"));
+		storedScores = storedScores.sort(function(x,y) {
+
+			//  If Score is tied, sort by Time Remaining...
+			if(x[1]-y[1] == 0) {
+				return y[2]-x[2];
+			}
+			//  ...otherwise sort by score.
+			else {
+				return y[1]-x[1];
+			}
+
+		});
+		
+	}
+
+	//  Function renderScores renders scores. (Who would have thought?)
+	function renderScores() {
+		
+		if (localStorage.getItem("scores") !== null) {
+			
+			storedScores = JSON.parse(localStorage.getItem("scores"));
+		  
+			$(".added").remove();
+			sortScores();
+			//  Place High Scores from localStorage into newly created elements inside High Score modal.
+			for (let i = 0; i < storedScores.length; i++) {
+
+				//NOTE:  Class 'added' is used to easily remove highScores elements.
+				let newRow = $("<tr class='added'>");
+				$("#highScores").append(newRow);
+				newRow.append($("<td class='added'>").text(storedScores[i][0])).append($("<td class='added'>").text(storedScores[i][1] + " %")).append($("<td class='added'>").text(storedScores[i][2] + " seconds"));
+
+			}
+
+		}
 
 	}
 
@@ -45,6 +78,8 @@ $(document).ready(function () {
 
 	//  Function newGame sets up content of HTML, testItems element,s and event listeners for a new game.
 	function newGame() {
+
+		renderScores();
 		
 		//  Exam question objects.
 		testItem = [
@@ -369,14 +404,9 @@ $(document).ready(function () {
 		
 		let playerName = $("#initial-input").val();
 		let results = [playerName, finalScore, timeRemaining]
-		let newRow = $("<tr class='added'>");
-
-		$("#highScores").append(newRow);
-		newRow.append($("<td class='added'>").text(playerName)).append($("<td class='added'>").text(finalScore + " %")).append($("<td class='added'>").text(timeRemaining + " seconds"));
-		
 		storedScores.push(results);
 		localStorage.setItem("scores", JSON.stringify(storedScores));
-
+		renderScores();
 		$("#initial-input").val("");
 		$("#initialsModal").modal('hide');	
 		$("#scoreModal").modal('show');
