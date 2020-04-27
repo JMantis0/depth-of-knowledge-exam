@@ -143,12 +143,14 @@ header::after {
 }
 
 #initial-input {
+	width: 100%;
+	border: none;
 	text-align: center;
 	padding-top: 10px;
 	margin: 10px 0 10px 0;
 	font-family: 'Baloo Tammudu 2', cursive;
 	font-weight: 700;
-	background-color:  #dddddd;
+	background-color: transparent;
 	font-size: 20px;
 }
 
@@ -178,6 +180,10 @@ td, th {
 	padding: 8px;
 	padding-top:20px;
 	font-size: 20px;
+}
+
+.bold {
+	font-weight: 900;
 }
 
 th {
@@ -324,6 +330,15 @@ tr:nth-child(odd) {
 
 	.smaller {
 		font-size: 18px;
+	}
+
+}
+
+@media (min-width: 768px) {
+
+	.modal-xl {	
+		width: 90%;
+		max-width:1200px;
 	}
 
 }

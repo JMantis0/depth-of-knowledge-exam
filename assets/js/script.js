@@ -7,7 +7,7 @@ let totalCorrect = 0;	//  Score tracking.
 let totalIncorrect = 0;
 let totalQuestions = 0;
 let finalScore = 0;		
-let storedScores = [];	//  Controls persistence of High Scores.
+let storedScores = []; //  Controls persistence of High Scores.
 
 $(document).ready(function () {
 
@@ -47,13 +47,21 @@ $(document).ready(function () {
 		  
 			$(".added").remove();
 			sortScores();
-			//  Place High Scores from localStorage into newly created elements inside High Score modal.
+			//  Place High Scores from localStorage High Score modal.
 			for (let i = 0; i < storedScores.length; i++) {
 
-				//NOTE:  Class 'added' is used to easily remove highScores elements.
+				//NOTE:  Class 'added' is used to easily clear high scores from modal.
 				let newRow = $("<tr class='added'>");
 				$("#highScores").append(newRow);
-				newRow.append($("<td class='added'>").text(storedScores[i][0])).append($("<td class='added'>").text(storedScores[i][1] + " %")).append($("<td class='added'>").text(storedScores[i][2] + " seconds"));
+				//  Give first place a trophy
+				if(i==0) {
+					let firstPlace = $("<td class='added bold'>");
+					firstPlace.append("<i class='fas fa-trophy added'>");
+					newRow.append(firstPlace).append($("<td class='added'>").text(storedScores[i][0])).append($("<td class='added'>").text(storedScores[i][1] + " %")).append($("<td class='added'>").text(storedScores[i][2] + " seconds"));
+				}
+				else{
+					newRow.append($("<td class='added bold'>").text(i+1)).append($("<td class='added'>").text(storedScores[i][0])).append($("<td class='added'>").text(storedScores[i][1] + " %")).append($("<td class='added'>").text(storedScores[i][2] + " seconds"));
+				}
 
 			}
 
@@ -409,7 +417,7 @@ $(document).ready(function () {
 		$(".saver").off();
 		
 		let playerName = $("#initial-input").val();
-		let results = [playerName, finalScore, timeRemaining]
+		let results = [playerName, finalScore, timeRemaining];
 		storedScores.push(results);
 		localStorage.setItem("scores", JSON.stringify(storedScores));
 		renderScores();
