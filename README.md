@@ -1,7 +1,7 @@
 
 # Depth of Knowledge Exam: JavaScript Edition
 
-**[Run-Application!](https://jmantis0.github.io/depth-of-knowledge-exam/)**
+**[Run-Application!](https://jmantis0.github.io/depth-of-knowledge-javascript-edition/)**
 
 ![begin](assets/images/click-to-begin!.PNG)
 

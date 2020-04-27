@@ -227,7 +227,6 @@ $(document).ready(function () {
 		$(".answerBtn").text("_").addClass("off").removeClass("on active correct incorrect smaller");
 		$(".submitBtn").text("CLICK TO BEGIN").addClass("on correct").click(startTimer).click(sounds.select).click(phaseOne);
 		
-
 	}
 
 	//  Function phaseOne presents a new question and its answer choices to the player.
