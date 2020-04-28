@@ -2,6 +2,10 @@ body {
 	background-color:gold;
 }
 
+.row {
+	min-width: 300px;
+}
+
 a, #timer {
 	font-family: 'Source Code Pro', sans-serif;
 	font-weight: 900;
