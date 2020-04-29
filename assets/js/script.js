@@ -438,14 +438,12 @@ $(document).ready(function () {
 			timeRemaining -= 1;
 			$("#timer").text("Time remaining: " + timeRemaining + "s");
 			
-			if (timeRemaining == 0) {
-				sounds.timeUp();
-			}
 			if (timeRemaining <= -1) {
 				timeRemaining = 0;
 				clearInterval(quizInterval);
 				$("#timer").text("Time remaining: 0s");
 				endPhase("timeUp");
+				sounds.timeUp();
 			}
 
 		}, 1000);
