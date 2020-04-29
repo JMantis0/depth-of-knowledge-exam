@@ -20,18 +20,17 @@ $(document).ready(function () {
 
 	//  Function sortScores sorts storedScores. 
 	//  NOTE: Index 1 is Score %.  Index 2 is Time Remaining.
-	//  x and y are elements in storedScores being compared to eachother.
 	function sortScores() {
 
-		storedScores = storedScores.sort(function(x,y) {
+		storedScores = storedScores.sort(function(score1,score2) {
 
 			//  If Score is tied, sort by Time Remaining...
-			if(x[1]-y[1] == 0) {
-				return y[2]-x[2];
+			if(score1[1]-score2[1] == 0) {
+				return score2[2]-score1[2];
 			}
 			//  ...otherwise sort by score.
 			else {
-				return y[1]-x[1];
+				return score2[1]-score1[1];
 			}
 
 		});
