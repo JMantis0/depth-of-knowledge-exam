@@ -35,7 +35,6 @@ $(document).ready(function () {
 	//  Function startTimer tracks the player's time left and ends the game if time expires.
 	function startTimer() {
 
-		timeRemaining -= 1;
 		$("#timer").text("Time remaining: " + timeRemaining + "s")
 		
 		quizInterval = setInterval(function () {
