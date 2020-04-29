@@ -370,7 +370,7 @@ $(document).ready(function () {
 	function endPhase(reason) {
 		
 		finalScore = Math.round((totalCorrect / (totalQuestions)) * 100);
-		$(".submitBtn").addClass("on").removeClass("on active correct incorrect").text("FINAL SCORE : " + finalScore + "%  CLICK TO SAVE").focus().off();
+		$(".submitBtn").addClass("on").removeClass("active correct incorrect").text("FINAL SCORE : " + finalScore + "%  CLICK TO SAVE").focus().off();
 		$(".answerBtn").removeClass("on active correct incorrect").off();
 
 		if (reason === "complete") {
