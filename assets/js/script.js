@@ -1,72 +1,14 @@
-// Global Variables
-let testItem = [];		//  Array of testItem objects.  Used to control HTML content and appearance.
-let currentItem = 0;	//  Index for testItem Array.
-let timeRemaining = 0;	//  Controls game timer. 
-let quizInterval = null;	
-let totalCorrect = 0;	//  Score tracking.
-let totalIncorrect = 0;
-let totalQuestions = 0;
-let finalScore = 0;		
-let storedScores = []; //  Controls persistence of High Scores.
-
 $(document).ready(function () {
 
-	//  A random number generator.
-	function jRandom(x) {
-
-		return Math.floor(Math.random() * x);
-
-	}
-
-	//  Function sortScores sorts storedScores. 
-	//  NOTE: Index 1 is Score %.  Index 2 is Time Remaining.
-	function sortScores() {
-
-		storedScores = storedScores.sort(function(score1,score2) {
-
-			//  If Score is tied, sort by Time Remaining...
-			if(score1[1]-score2[1] == 0) {
-				return score2[2]-score1[2];
-			}
-			//  ...otherwise sort by score.
-			else {
-				return score2[1]-score1[1];
-			}
-
-		});
-		
-	}
-
-	//  Function renderScores renders scores. (Who would have thought?)
-	function renderScores() {
-		
-		if (localStorage.getItem("scores") !== null) {
-			
-			storedScores = JSON.parse(localStorage.getItem("scores"));
-		  
-			$(".added").remove();
-			sortScores();
-			//  Place High Scores from localStorage High Score modal.
-			for (let i = 0; i < storedScores.length; i++) {
-
-				//NOTE:  Class 'added' is used to easily clear high scores from modal.
-				let newRow = $("<tr class='added'>");
-				$("#highScores").append(newRow);
-				//  Give first place a trophy
-				if(i==0) {
-					let firstPlace = $("<td class='added bold'>");
-					firstPlace.append("<i class='fas fa-trophy added'>");
-					newRow.append(firstPlace).append($("<td class='added'>").text(storedScores[i][0])).append($("<td class='added'>").text(storedScores[i][1] + " %")).append($("<td class='added'>").text(storedScores[i][2] + " seconds"));
-				}
-				else{
-					newRow.append($("<td class='added bold'>").text(i+1)).append($("<td class='added'>").text(storedScores[i][0])).append($("<td class='added'>").text(storedScores[i][1] + " %")).append($("<td class='added'>").text(storedScores[i][2] + " seconds"));
-				}
-
-			}
-
-		}
-
-	}
+	let testItem = [];		//  Array of testItem objects.  Used to control HTML content and appearance.
+	let currentItem = 0;	//  Index for testItem Array.
+	let timeRemaining = 0;	//  Controls game timer. 
+	let quizInterval = null;	
+	let totalCorrect = 0;	//  Score tracking.
+	let totalIncorrect = 0;
+	let totalQuestions = 0;
+	let finalScore = 0;		
+	let storedScores = []; //  Controls persistence of High Scores.
 
 	//  Sounds are fun.
 	let sounds = {
@@ -83,16 +25,154 @@ $(document).ready(function () {
 
 	};
 
+	//  A random number generator.
+	function jRandom(x) {
+
+		return Math.floor(Math.random() * x);
+
+	}
+
+	//  Function startTimer tracks the player's time left and ends the game if time expires.
+	function startTimer() {
+
+		timeRemaining -= 1;
+		$("#timer").text("Time remaining: " + timeRemaining + "s")
+		
+		quizInterval = setInterval(function () {
+
+			timeRemaining -= 1;
+			$("#timer").text("Time remaining: " + timeRemaining + "s");
+			
+			if (timeRemaining <= -1) {
+				timeRemaining = 0;
+				clearInterval(quizInterval);
+				$("#timer").text("Time remaining: 0s");
+				endPhase("timeUp");
+				sounds.timeUp();
+			}
+
+		}, 1000);
+
+	}
+
+	//  Function renderScores renders scores. (Who would have thought?)
+	//  Only works if there are scores in localStorage.
+	function renderScores() {
+
+		//  Subfunction sortScores sorts storedScores. 
+		//  NOTE: Index 1 is Score %.  Index 2 is Time Remaining.
+		function sortScores() {
+
+			storedScores = storedScores.sort(function(score1,score2) {
+
+				//  If Score is tied, sort by Time Remaining...
+				if(score1[1]-score2[1] == 0) {
+					return score2[2]-score1[2];
+				}
+				//  ...otherwise sort by score.
+				else {
+					return score2[1]-score1[1];
+				}
+
+			});
+			
+		}
+		
+		if (localStorage.getItem("scores") !== null) {
+
+			$(".added").remove();
+			storedScores = JSON.parse(localStorage.getItem("scores"));
+			sortScores();
+			//  Place High Scores from localStorage into #highScores modal.
+			for (let i = 0; i < storedScores.length; i++) {
+
+				//  NOTE:  Class 'added' is used to easily clear high scores from modal.
+				let newRow = $("<tr class='added'>");
+				$("#highScores").append(newRow);
+				//  Give first place a trophy.
+				if(i==0) {
+					let firstPlace = $("<td class='added bold'>");
+					firstPlace.append("<i class='fas fa-trophy added'>");
+							//  Rank <td>...           ...Name <td>...   					              ...Score <td>...						 	          ...and Time Left <td>.
+					newRow.append(firstPlace).append($("<td class='added'>").text(storedScores[i][0])).append($("<td class='added'>").text(storedScores[i][1] + " %")).append($("<td class='added'>").text(storedScores[i][2] + " seconds"));
+				}
+				//  Give everyone else a numeric rank.
+				else{          //  Rank <td>...                                       ...Name <td>...   					                 ...Score <td>...						 		        ...and Time Left <td>.
+					newRow.append($("<td class='added bold'>").text(i+1)).append($("<td class='added'>").text(storedScores[i][0])).append($("<td class='added'>").text(storedScores[i][1] + " %")).append($("<td class='added'>").text(storedScores[i][2] + " seconds"));
+				}
+
+			}
+
+		}
+
+	}
+	
+	//  Function clearScores removes scores from localStorage and from the High Scores modal (with style).
+	//  Only works if there is a score to delete.
+	function clearScores () {
+
+		if($("#highScores tr").length > 1) {
+
+			localStorage.removeItem("scores");
+			storedScores = [];
+			
+			//  Fun animation, fun sound, and removal of localStorage/High Score elements.
+			$(".added").animate({
+
+				'padding': "0px",
+				'height': "0px",
+				'font-size': "0px",
+				'margin': "0px"
+
+			}, 4800, function() {
+
+				$(".added").remove();
+
+			});
+			sounds.shutdown();
+
+		}
+
+	}
+
+	//  Function initialListeners adds event listeners that are not part of of actual game-play.
+	function initialListeners() {
+
+		$(".clearScores").click(clearScores);
+	
+		$("a").click(function () {
+
+			$("#scoreModal").modal('show');
+			sounds.woosh();
+
+		});
+		
+		$('#scoreModal').on('hide.bs.modal', function () {
+
+			sounds.woosh();
+			
+		});
+
+	}
+
+	/* ************  Functions below control the flow of the quiz ************ */
+
 	//  Function newGame sets up content of HTML, testItems element,s and event listeners for a new game.
 	function newGame() {
 
-		renderScores();
+		$("#initial-input").off();
+		$(".saver").off();
+		$(".submitBtn").off();
 		
-		//  Exam question objects.
+		renderScores();
+		//  Reset testItems and certain globals. 
+		totalIncorrect = 0;
+		totalCorrect = 0;
+		timeRemaining = 120;
 		testItem = [
 
 			{
-				name: "alert in JS",
+				name: "Alert in JS",
 				question: "Which makes an alert box?",
 				correctAnswer: "alert();",
 				incorrectAnswers: ["alertBox();", "msg();", "msgBox();"]
@@ -106,35 +186,35 @@ $(document).ready(function () {
 			},
 
 			{
-				name: "FOR loop",
+				name: "FOR loop syntax",
 				question: "Which starts a FOR loop?",
 				correctAnswer: "for",
 				incorrectAnswers: ["four", "fore!", "4"]
 			},
 
 			{
-				name: "jQuery question",
+				name: "jQuery shorthand",
 				question: "The 'shorthand' version of JavaScript is called ____________.",
 				correctAnswer: "jQuery",
 				incorrectAnswers: ["HTML", "miniJava", "jScript"]
 			},
 
 			{
-				name: "id Syntax Question",
+				name: "id syntax",
 				question: "Which of these selects an element by ID?",
 				correctAnswer: "#",
 				incorrectAnswers: [".", "@", "$"]
 			},
 
 			{
-				name: "class Syntax Question",
+				name: "class syntax",
 				question: "Which of these select an element by class?",
 				correctAnswer: ".",
 				incorrectAnswers: ["#", "@", "$"]
 			},
 
 			{
-				name: "Identify event listeners",
+				name: "Identify event listener",
 				question: "Which of these can add an event listener?",
 				correctAnswer: ".on()",
 				incorrectAnswers: [ ".off()", ".up()", ".down()"]
@@ -148,14 +228,14 @@ $(document).ready(function () {
 			},
 
 			{
-				name: "For loop question",
+				name: "FOR loop terminology",
 				question: "Which of these belong inside a FOR-loop's argument?",
 				correctAnswer: "all of these",
 				incorrectAnswers: ["iterator", "condition", "initializer"]
 			},
 
 			{
-				name: "Linking .js files to html",
+				name: "Linking .js files",
 				question: "Which <script> attribute links HTML to a js file?",
 				correctAnswer: "src",
 				incorrectAnswers: ["href", "rel", "name"]
@@ -177,59 +257,8 @@ $(document).ready(function () {
 
 		];
 
-		//  Reset certain globals.
-		totalIncorrect = 0;
-		totalCorrect = 0;
 		totalQuestions = testItem.length;
-		timeRemaining = 120;
-
-		$("*").off();
 		$("#unanswered").remove();
-
-		//  Add fun sounds for High Score link (only <a> on the site).
-		$("a").click(function () {
-
-			$("#scoreModal").modal('show');
-			sounds.woosh();
-
-		});
-		$('#scoreModal').on('hide.bs.modal', function () {
-
-			sounds.woosh();
-			$(".clearScores").off();
-
-		});
-
-		//  Ensure Clear Scores button only works when there is a high score to delete.
-		$("#scoreModal").on("shown.bs.modal", function() {
-
-			if($("#highScores tr").length > 1) {
-				
-				$(".clearScores").click(sounds.shutdown).click(function () {
-					
-					localStorage.removeItem("scores");
-					storedScores = [];
-					//  Fun animation, fun sound, and removal of localStorage/High Score elements.
-					$(".added").animate({
-
-						'padding': "0px",
-						'height': "0px",
-						'font-size': "0px",
-						'margin': "0px"
-
-					}, 4800, function() {
-
-						$(".added").remove();
-
-					});
-
-					$(".clearScores").off();
-
-				});
-	
-			}
-		});
-
 		$(".question").text("Depth of Knowledge: JavaScript Edition");
 		$(".answerBtn").text("_").addClass("off").removeClass("on active correct incorrect smaller");
 		$(".submitBtn").text("CLICK TO BEGIN").addClass("on correct").click(startTimer).click(sounds.select).click(phaseOne);
@@ -239,10 +268,11 @@ $(document).ready(function () {
 	//  Function phaseOne presents a new question and its answer choices to the player.
 	function phaseOne() {
 
+		$(".submitBtn").text("SELECT YOUR ANSWER").removeClass("correct incorrect on").off();
+
 		currentItem = jRandom(testItem.length)
 		let item = testItem[currentItem];
 		$(".question").text(item.question);
-		$(".submitBtn").text("SELECT YOUR ANSWER").removeClass("correct incorrect on").off();
 		$(".answerBtn").attr("value", "false");
 		$(".answerBtn")[jRandom(4)].setAttribute("value", "true");
 
@@ -258,7 +288,7 @@ $(document).ready(function () {
 			}
 
 		});
-
+		
 		$(".answerBtn").addClass("active").removeClass("off on correct incorrect").click(sounds.click).click(phaseTwo);
 
 	}
@@ -268,6 +298,7 @@ $(document).ready(function () {
 	function phaseTwo() {
 		
 		$(".answerBtn").removeClass("active").off();
+		
 		$(".answerBtn").each(function () {
 
 			if (this.value === "true") {
@@ -311,7 +342,7 @@ $(document).ready(function () {
 
 		}
 
-		$(".submitBtn").click(stateCheck);
+		$(".submitBtn").click(stateCheck).focus();
 
 	}
 
@@ -338,8 +369,9 @@ $(document).ready(function () {
 	//  Function endPhase ends the current game based on the reason passed to it.
 	//  The player is given feedback and offered to save his/her score.
 	function endPhase(reason) {
-
-		$(".submitBtn").removeClass("on active correct incorrect").off();
+		
+		finalScore = Math.round((totalCorrect / (totalQuestions)) * 100);
+		$(".submitBtn").addClass("on").removeClass("on active correct incorrect").text("FINAL SCORE : " + finalScore + "%  CLICK TO SAVE").focus().off();
 		$(".answerBtn").removeClass("on active correct incorrect").off();
 
 		if (reason === "complete") {
@@ -356,10 +388,7 @@ $(document).ready(function () {
 			$(".four").text(totalIncorrect).addClass("incorrect").append($("<div id='unanswered'>").text(" (" + (totalQuestions - (totalCorrect + totalIncorrect)) + " unanswered)"));
 
 		}
-
-		finalScore = Math.round((totalCorrect / (totalQuestions)) * 100);
-		$(".submitBtn").off();
-		$(".submitBtn").text("FINAL SCORE : " + finalScore + "%  CLICK TO SAVE").addClass("on");
+		
 		$(".one").text("Total Correct").addClass("correct smaller");
 		$(".two").text("Total Incorrect").addClass("incorrect smaller");
 		$(".three").text(totalCorrect).addClass("correct");
@@ -400,6 +429,7 @@ $(document).ready(function () {
 			}
 
 			sounds.click();
+
 		});
 
 		$(".saver").click(sounds.scoreGong).click(logScore);
@@ -412,44 +442,20 @@ $(document).ready(function () {
 	//  NOTE:  This function is purely optional and may never be called.
 	function logScore() {
 		
-		$("initial-input").off();
+		$("#initial-input").off();
 		$(".saver").off();
-		
 		let playerName = $("#initial-input").val();
 		let results = [playerName, finalScore, timeRemaining];
 		storedScores.push(results);
 		localStorage.setItem("scores", JSON.stringify(storedScores));
 		renderScores();
-
 		$("#initial-input").val("");
 		$("#initialsModal").modal('hide');	
 		$("#scoreModal").modal('show');
 
 	}
-
-	//  Function startTimer tracks the player's time left and ends the game if time expires.
-	function startTimer() {
-
-		timeRemaining -= 1;
-		$("#timer").text("Time remaining: " + timeRemaining + "s")
-		
-		quizInterval = setInterval(function () {
-
-			timeRemaining -= 1;
-			$("#timer").text("Time remaining: " + timeRemaining + "s");
-			
-			if (timeRemaining <= -1) {
-				timeRemaining = 0;
-				clearInterval(quizInterval);
-				$("#timer").text("Time remaining: 0s");
-				endPhase("timeUp");
-				sounds.timeUp();
-			}
-
-		}, 1000);
-
-	}
-
+	
+	initialListeners();
 	//  Start the game already!
 	newGame();
 
