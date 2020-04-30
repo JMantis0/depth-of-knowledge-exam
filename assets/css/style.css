@@ -123,7 +123,7 @@ header::after {
 	}
 }
 
-/* gives modal a scroll bar if content doesnt fit */
+/* Give modal a scroll bar if content doesn't fit */
 .modal {
 	overflow: auto;
 }
@@ -215,7 +215,6 @@ tr:nth-child(odd) {
 	}
 	
 	.second::before {
-		
 		margin-bottom: 30px;
 		margin-top: 30px;
 	}
@@ -257,7 +256,6 @@ tr:nth-child(odd) {
 		margin-top: 20px;
 	}
 	header::after {
-		content: " ";
 		margin-bottom: 20px;   
 	}
 
@@ -283,9 +281,6 @@ tr:nth-child(odd) {
 		margin-top: 5px;
 	}
 
-	a, #timer {
-		font-size: 12px;
-	}
 	.question {
 		font-size: 25px
 	}
@@ -307,7 +302,7 @@ tr:nth-child(odd) {
 	}
 	
 	.second::before {
-		
+	
 		margin-bottom: 20px;
 		margin-top: 20px;
 	}
@@ -327,6 +322,10 @@ tr:nth-child(odd) {
 }
 
 @media screen and (max-width: 369px) {
+
+	a, #timer {
+		font-size: 13.5px;
+	}
 
 	.question {
 		font-size: 23px;

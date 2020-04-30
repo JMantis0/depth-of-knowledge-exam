@@ -10,7 +10,7 @@ $(document).ready(function () {
 	let finalScore = 0;		
 	let storedScores = []; //  Controls persistence of High Scores.
 
-	//  Sounds are fun.
+	//  Sounds (are fun).
 	let sounds = {
 
 		select:    () => $("#menuSelect")[0].play(),
@@ -37,7 +37,7 @@ $(document).ready(function () {
 
 		$("#timer").text("Time remaining: " + timeRemaining + "s")
 		
-		quizInterval = setInterval(function () {
+		quizInterval = setInterval(function() {
 
 			timeRemaining -= 1;
 			$("#timer").text("Time remaining: " + timeRemaining + "s");
@@ -65,7 +65,7 @@ $(document).ready(function () {
 			storedScores = storedScores.sort(function(score1,score2) {
 
 				//  If Score is tied, sort by Time Remaining...
-				if(score1[1]-score2[1] == 0) {
+				if (score1[1]-score2[1] == 0) {
 					return score2[2]-score1[2];
 				}
 				//  ...otherwise sort by score.
@@ -89,14 +89,14 @@ $(document).ready(function () {
 				let newRow = $("<tr class='added'>");
 				$("#highScores").append(newRow);
 				//  Give first place a trophy.
-				if(i==0) {
+				if (i==0) {
 					let firstPlace = $("<td class='added bold'>");
 					firstPlace.append("<i class='fas fa-trophy added'>");
 							//  Rank <td>...           ...Name <td>...   					              ...Score <td>...						 	          ...and Time Left <td>.
 					newRow.append(firstPlace).append($("<td class='added'>").text(storedScores[i][0])).append($("<td class='added'>").text(storedScores[i][1] + " %")).append($("<td class='added'>").text(storedScores[i][2] + " seconds"));
 				}
 				//  Give everyone else a numeric rank.
-				else{          //  Rank <td>...                                       ...Name <td>...   					                 ...Score <td>...						 		        ...and Time Left <td>.
+				else {          //  Rank <td>...                                       ...Name <td>...   					                 ...Score <td>...						 		        ...and Time Left <td>.
 					newRow.append($("<td class='added bold'>").text(i+1)).append($("<td class='added'>").text(storedScores[i][0])).append($("<td class='added'>").text(storedScores[i][1] + " %")).append($("<td class='added'>").text(storedScores[i][2] + " seconds"));
 				}
 
@@ -108,9 +108,9 @@ $(document).ready(function () {
 	
 	//  Function clearScores removes scores from localStorage and from the High Scores modal (with style).
 	//  Only works if there is a score to delete.
-	function clearScores () {
+	function clearScores() {
 
-		if($("#highScores tr").length > 1) {
+		if ($("#highScores tr").length > 1) {
 
 			localStorage.removeItem("scores");
 			storedScores = [];
@@ -139,14 +139,14 @@ $(document).ready(function () {
 
 		$(".clearScores").click(clearScores);
 	
-		$("a").click(function () {
+		$("a").click(function() {
 
 			$("#scoreModal").modal('show');
 			sounds.woosh();
 
 		});
 		
-		$('#scoreModal').on('hide.bs.modal', function () {
+		$('#scoreModal').on('hide.bs.modal', function() {
 
 			sounds.woosh();
 			
@@ -156,13 +156,12 @@ $(document).ready(function () {
 
 	/* ************  Functions below control the flow of the quiz ************ */
 
-	//  Function newGame sets up content of HTML, testItems element,s and event listeners for a new game.
+	//  Function newGame sets up content of HTML, testItems elements, and event listeners for a new game.
 	function newGame() {
 
 		$("#initial-input").off();
 		$(".saver").off();
-		$(".submitBtn").off();
-		
+		$(".submitBtn").off();	
 		renderScores();
 		//  Reset testItems and certain globals. 
 		totalIncorrect = 0;
@@ -275,7 +274,7 @@ $(document).ready(function () {
 		$(".answerBtn").attr("value", "false");
 		$(".answerBtn")[jRandom(4)].setAttribute("value", "true");
 
-		$(".answerBtn").each(function () {
+		$(".answerBtn").each(function() {
 
 			if (this.value === "true") {
 				$(this).text(item.correctAnswer).click(sounds.right);
@@ -298,7 +297,7 @@ $(document).ready(function () {
 		
 		$(".answerBtn").removeClass("active").off();
 		
-		$(".answerBtn").each(function () {
+		$(".answerBtn").each(function() {
 
 			if (this.value === "true") {
 				$(this).addClass("correct");
@@ -403,13 +402,13 @@ $(document).ready(function () {
 		$("#initialsModal").modal('show');
 		sounds.woosh();
 
-		setTimeout(function () { 
+		setTimeout(function() { 
 
 			$("#initial-input").focus() ;
 
 		}, 500);
 
-		$("#initial-input").keydown(function (event) {
+		$("#initial-input").keydown(function(event) {
 
 			if (event.keyCode === 13) {
 
