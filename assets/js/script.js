@@ -173,14 +173,14 @@ $(document).ready(function () {
 				name: "Alert in JS",
 				question: "Which makes an alert box?",
 				correctAnswer: "alert();",
-				incorrectAnswers: ["alertBox();", "msg();", "msgBox();"]
+				incorrectAnswers: ["alertBox();", "msg();", "msgBox();", "warning()"]
 			},
 
 			{
 				name: "Comment in JavaScript",
 				question: "Which is a comment in a JavaScript?",
 				correctAnswer: "// This",
-				incorrectAnswers: ["<!--This-->", "`This`", "#This"]
+				incorrectAnswers: ["<!--This-->", "`This`", "#This", '/*This*/']
 			},
 
 			{
@@ -194,35 +194,35 @@ $(document).ready(function () {
 				name: "jQuery shorthand",
 				question: "The 'shorthand' version of JavaScript is called ____________.",
 				correctAnswer: "jQuery",
-				incorrectAnswers: ["HTML", "miniJava", "jScript"]
+				incorrectAnswers: ["HTML", "miniJava", "jScript", "MochaScript"]
 			},
 
 			{
 				name: "id syntax",
 				question: "Which of these selects an element by ID?",
 				correctAnswer: "#",
-				incorrectAnswers: [".", "@", "$"]
+				incorrectAnswers: [".", "@", "$", "&", "!", "*"]
 			},
 
 			{
 				name: "class syntax",
 				question: "Which of these select an element by class?",
 				correctAnswer: ".",
-				incorrectAnswers: ["#", "@", "$"]
+				incorrectAnswers: ["#", "@", "$", "&", "!", "*"]
 			},
 
 			{
 				name: "Identify event listener",
 				question: "Which of these can add an event listener?",
 				correctAnswer: ".on()",
-				incorrectAnswers: [ ".off()", ".up()", ".down()"]
+				incorrectAnswers: [ ".off()", ".up()", ".down()", ".add()", ".pop()"]
 			},
 
 			{
 				name: "Variable types",
 				question: "Which variable type holds a value of true or false?",
-				correctAnswer: "Boolean",
-				incorrectAnswers: ["String", "Array", "Integer"]
+				correctAnswer: "boolean",
+				incorrectAnswers: ["string", "array", "integer", "function", "attribute"]
 			},
 
 			{
@@ -236,21 +236,42 @@ $(document).ready(function () {
 				name: "Linking .js files",
 				question: "Which <script> attribute links HTML to a js file?",
 				correctAnswer: "src",
-				incorrectAnswers: ["href", "rel", "name"]
+				incorrectAnswers: ["href", "rel", "name", "link", "value"]
 			},
 
 			{
 				name: "DOM",
 				question: "What does the 'O' in DOM stand for?",
 				correctAnswer: "Object",
-				incorrectAnswers: ["Olive", "Ocelot", "Octogon"]
+				incorrectAnswers: ["Olive", "Ocelot", "Octogon", "Ostrich", "Oxygen", "Orca", "Orbit"]
 			},
 
 			{
 				name: "Conditional Q",
 				question: "let x = !!!true;  What is the value of x?",
 				correctAnswer: "false",
-				incorrectAnswers: ["true", "null", "supertrue"]
+				incorrectAnswers: ["true", "null", "supertrue", "ultrafalse"]
+			},
+
+			{
+				name: "jQuery() alias",
+				question: "Which of these is an alias for jQuery?",
+				correctAnswer: "$",
+				incorrectAnswers: [".", "#", "@", "!", "&",  "*"]
+			},
+
+			{
+				name: "Removing array elements",
+				question: "Which of these removes elements from an array?",
+				correctAnswer: "all of these",
+				incorrectAnswers: [".splice()", ".pop()", ".shift()", ".filter()"]
+			},
+
+			{
+				name: "Select all elements",
+				question: "Which of these selects all elements?",
+				correctAnswer: "*",
+				incorrectAnswers: [".", "#", "@", "!", "&",  "$"]
 			}
 
 		];
