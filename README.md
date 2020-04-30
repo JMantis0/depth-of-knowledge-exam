@@ -14,7 +14,8 @@ Scores for every quiz taken can optionally be recorded to the HIGH SCORES leader
 
 ![Score-Tracking](assets/images/high-scores.PNG)
 
-### Tick-down timer  Once a quiz begins your time is running!  In addition to testing your knowledge of concepts, this feature also allows you to track and gauge your speed.
+### Tick-down timer  
+Once a quiz begins your time is running!  In addition to testing your knowledge of concepts, this feature also allows you to track and gauge your speed.
 
 ![timer](assets/images/timer.PNG)
 
