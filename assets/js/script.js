@@ -172,105 +172,105 @@ $(document).ready(function () {
 			{
 				name: "Alert in JS",
 				question: "Which makes an alert box?",
-				correctAnswer: "alert();",
-				incorrectAnswers: ["alertBox();", "msg();", "msgBox();", "warning()"]
+				correctAnswer: ["alert();"],
+				incorrectAnswers: ["alertBox();", "msg();", "msgBox();", "warning();"]
 			},
 
 			{
 				name: "Comment in JavaScript",
 				question: "Which is a comment in a JavaScript?",
-				correctAnswer: "// This",
-				incorrectAnswers: ["<!--This-->", "`This`", "#This", '/*This*/']
+				correctAnswer: ["// This", '/*This*/'],
+				incorrectAnswers: ["<!--This-->", "`This`", "#This","$This" ]
 			},
 
 			{
 				name: "FOR loop syntax",
 				question: "Which starts a FOR loop?",
-				correctAnswer: "for",
+				correctAnswer: ["for"],
 				incorrectAnswers: ["four", "fore!", "4"]
 			},
 
 			{
 				name: "jQuery shorthand",
 				question: "The 'shorthand' version of JavaScript is called ____________.",
-				correctAnswer: "jQuery",
+				correctAnswer: ["jQuery"],
 				incorrectAnswers: ["HTML", "miniJava", "jScript", "MochaScript"]
 			},
 
 			{
 				name: "id syntax",
 				question: "Which of these selects an element by ID?",
-				correctAnswer: "#",
+				correctAnswer: ["#"],
 				incorrectAnswers: [".", "@", "$", "&", "!", "*"]
 			},
 
 			{
 				name: "class syntax",
 				question: "Which of these select an element by class?",
-				correctAnswer: ".",
+				correctAnswer: ["."],
 				incorrectAnswers: ["#", "@", "$", "&", "!", "*"]
 			},
 
 			{
 				name: "Identify event listener",
 				question: "Which of these can add an event listener?",
-				correctAnswer: ".on()",
+				correctAnswer: [".on()", ".click()"],
 				incorrectAnswers: [ ".off()", ".up()", ".down()", ".add()", ".pop()"]
 			},
 
 			{
 				name: "Variable types",
 				question: "Which variable type holds a value of true or false?",
-				correctAnswer: "boolean",
+				correctAnswer: ["boolean"],
 				incorrectAnswers: ["string", "array", "integer", "function", "attribute"]
 			},
 
 			{
 				name: "FOR loop terminology",
 				question: "Which of these belong inside a FOR-loop's argument?",
-				correctAnswer: "all of these",
+				correctAnswer: ["all of these"],
 				incorrectAnswers: ["iterator", "condition", "initializer"]
 			},
 
 			{
 				name: "Linking .js files",
 				question: "Which <script> attribute links HTML to a js file?",
-				correctAnswer: "src",
+				correctAnswer: ["src"],
 				incorrectAnswers: ["href", "rel", "name", "link", "value"]
 			},
 
 			{
 				name: "DOM",
 				question: "What does the 'O' in DOM stand for?",
-				correctAnswer: "Object",
+				correctAnswer: ["Object"],
 				incorrectAnswers: ["Olive", "Ocelot", "Octogon", "Ostrich", "Oxygen", "Orca", "Orbit"]
 			},
 
 			{
 				name: "Conditional Q",
 				question: "let x = !!!true;  What is the value of x?",
-				correctAnswer: "false",
+				correctAnswer: ["false"],
 				incorrectAnswers: ["true", "null", "supertrue", "ultrafalse"]
 			},
 
 			{
 				name: "jQuery() alias",
 				question: "Which of these is an alias for jQuery?",
-				correctAnswer: "$",
+				correctAnswer: ["$"],
 				incorrectAnswers: [".", "#", "@", "!", "&",  "*"]
 			},
 
 			{
 				name: "Removing array elements",
 				question: "Which of these removes elements from an array?",
-				correctAnswer: "all of these",
+				correctAnswer: ["all of these"],
 				incorrectAnswers: [".splice()", ".pop()", ".shift()", ".filter()"]
 			},
 
 			{
 				name: "Select all elements",
 				question: "Which of these selects all elements?",
-				correctAnswer: "*",
+				correctAnswer: ["*"],
 				incorrectAnswers: [".", "#", "@", "!", "&",  "$"]
 			}
 
@@ -298,7 +298,8 @@ $(document).ready(function () {
 		$(".answerBtn").each(function() {
 
 			if (this.value === "true") {
-				$(this).text(item.correctAnswer).click(sounds.right);
+				let x = jRandom(item.correctAnswer.length);
+				$(this).text(item.correctAnswer[x]).click(sounds.right);
 			}
 			else {
 				let x = jRandom(item.incorrectAnswers.length);
