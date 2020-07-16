@@ -1,6 +1,8 @@
 
 # -Depth of Knowledge Exam: JavaScript Edition-
 
+## Concepts with-in:
+jQuery DOM Manipulation, DOM hierarchy, CSS selectors, Bootstrap Framework, Data attributes, and localstorage
 **[Run Application!](https://jmantis0.github.io/depth-of-knowledge-javascript-edition/)**
 
 ![begin](assets/images/gameplay.gif)
